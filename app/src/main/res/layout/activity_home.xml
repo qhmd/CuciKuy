@@ -7,19 +7,48 @@
     tools:context=".HomeActivity">
 
     <TextView
-        android:id="@+id/home_text"
+        android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kamu Di Halaman Home"
+        android:visibility="invisible"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="50dp"
         android:textSize="18sp"/>
+    <TextView
+        android:text="Nama Outlet"
+        android:visibility="invisible"
+        android:id="@+id/nama_outlet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/tvEmail"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/alamat"
+        android:text="Alaamt"
+        android:visibility="invisible"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/nama_outlet"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/no_hp"
+        android:text="No hp"
+        android:visibility="invisible"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/alamat"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/sign_out_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/home_text"
+        android:layout_below="@+id/no_hp"
         android:layout_centerHorizontal="true"
         android:text="Log Out"/>
 

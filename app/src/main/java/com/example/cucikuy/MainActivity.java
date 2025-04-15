@@ -170,8 +170,9 @@ public class MainActivity extends AppCompatActivity {
 //        if (blurTarget != null) {
 //            Blurry.delete(blurTarget);
 //        }
+        Log.i("USER : ", user.getEmail());
         if (user != null){
-            startActivity(new Intent(MainActivity.this, HomeActivity.class));
+            startActivity(new Intent(MainActivity.this, IntroduceActivity.class));
             finish();
         }
     }
