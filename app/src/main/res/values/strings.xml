@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">CuciKuy</string>
     <string name="default_web_client_id">850147636159-ajcp76l5hb8fvvk9s70q520cgbmlatp7.apps.googleusercontent.com</string>
+    <string name="beranda_nav">Beranda</string>
+    <string name="order_nav">Order</string>
+    <string name="report_nav">Laporan</string>
+    <string name="setting_nav">Settig</string>
 </resources>

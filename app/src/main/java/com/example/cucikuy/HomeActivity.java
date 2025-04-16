@@ -1,39 +1,23 @@
 package com.example.cucikuy;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 
-public class HomeActivity extends AppCompatActivity {
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_for_fragment);
-        setupBottomNav();
-        loadFragment(new FragmentBeranda());
-    }
-    private void setupBottomNav() {
-        findViewById(R.id.homeOption).setOnClickListener(v -> {
-            loadFragment(new FragmentBeranda());
-        });
-        findViewById(R.id.orderOption).setOnClickListener(v -> {
-            loadFragment(new FragmentOrder());
-        });
-        findViewById(R.id.reportOption).setOnClickListener(v -> {
-            loadFragment(new FragmentReport());
-        });
-        findViewById(R.id.settingOption).setOnClickListener(v -> {
-            loadFragment(new FragmentSetting());
-        });
-    }
-    private void loadFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
-    }
 
+        NavController navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
 }
