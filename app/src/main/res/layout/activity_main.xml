@@ -120,23 +120,8 @@
                 />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <ProgressBar
-        android:elevation="4dp"
-        android:indeterminateTint="#ffd648"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:id="@+id/googleProgress"
-        android:progressDrawable="@drawable/circular_progress_bar"
-        />
-    <View
-        android:id="@+id/darkOverlay"
+    <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#60000000"
-        android:visibility="gone"
-        />
-
+        layout="@layout/activity_loading"/>
 </FrameLayout>
