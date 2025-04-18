@@ -1,6 +1,7 @@
 package com.example.cucikuy;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,12 +36,7 @@ public class FragmentOrder extends Fragment {
         tambah_order_btn = view.findViewById((R.id.tambah_order));
         tambah_order_btn.setOnClickListener(v -> {
             Log.d("tambahorder" , "Di klik");
-            FragmentTambahOrder tambahOrder = new FragmentTambahOrder();
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_tambah_order, tambahOrder)
-                    .addToBackStack(null)
-                    .commit();
+            startActivity(new Intent(requireContext(), TambahOrderanActivity.class));
         });
         // Inisialisasi TabLayout dan ViewPager2
         tabLayout = view.findViewById(R.id.tabLayout);

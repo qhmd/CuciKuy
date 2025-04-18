@@ -107,7 +107,6 @@
                         android:textColorHint="@color/black"
                         android:hint="Nama Outlet Anda, Cth : Berkah Laundry"
                         android:layout_toRightOf="@id/toko_logo"
-
                         />
                     <EditText
                         android:id="@+id/alamat"

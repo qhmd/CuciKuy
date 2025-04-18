@@ -28,11 +28,8 @@ public class IntroduceActivity extends AppCompatActivity {
     ConstraintLayout blurTarget;
     private ProgressBar spinner;
     private View darkOverlay;
-
-
     private EditText noHp;
     private FirebaseUser user;
-
     private FirebaseFirestore db;
     private Button send_btn;
     @Override
@@ -54,12 +51,12 @@ public class IntroduceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 darkOverlay.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.VISIBLE);
                 Blurry.with(IntroduceActivity.this)
                         .radius(5)         // tingkat blur (0–25)
                         .sampling(2)        // pengambilan sampel (semakin besar, semakin ringan proses)
                         .onto(blurTarget);  // layout yang akan diblur
                 send_btn.setEnabled(false); // opsional: disable agar tidak ditekan berkali-kali
-                spinner.setVisibility(View.VISIBLE);
                 if (validateInput()) {
                     sendDataIntroduce();
                 } else {
@@ -108,6 +105,7 @@ public class IntroduceActivity extends AppCompatActivity {
                         })
                         .addOnFailureListener(e -> {
                             Log.e("Firestore", "Error", e);
+                            Log.d("FIREBASE_UID", "UID saat ini: " + uid);
                             spinner.setVisibility((View.GONE));
                             send_btn.setEnabled(true);
                             darkOverlay.setVisibility(View.GONE);
@@ -115,13 +113,12 @@ public class IntroduceActivity extends AppCompatActivity {
                             Toast.makeText(IntroduceActivity.this, "Terjadi kesalahan. Coba lagi.", Toast.LENGTH_SHORT).show();
                         });
             }
-
             private void updateUI () {
                 spinner.setVisibility((View.GONE));
                 send_btn.setEnabled(true);
                 darkOverlay.setVisibility(View.GONE);
                 Blurry.delete(blurTarget);
-                startActivity(new Intent(IntroduceActivity.this, HomeActivity.class));
+                startActivity(new Intent(IntroduceActivity.this, TambahOrderanActivity.class));
                 finish();
             }
         });
