@@ -88,6 +88,9 @@
             app:tabRippleColor="#fff"
             android:background="@drawable/tablayout"
             android:layout_height="wrap_content"/>
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"

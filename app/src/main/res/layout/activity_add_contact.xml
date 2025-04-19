@@ -76,9 +76,9 @@
             android:hint="Nama">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_input_name"
-                android:paddingVertical="7dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:paddingVertical="15dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"

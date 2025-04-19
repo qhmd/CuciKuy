@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,118 +15,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CuciKuy"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".HomeActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+        <!-- LAUNCHER PERTAMA SAAT APLIKASI DIBUKA -->
         <activity
             android:name=".IntroduceActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
-        <activity
-            android:name=".FragmentBeranda"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <!-- AKTIVITAS LAIN (tidak perlu intent-filter MAIN/LAUNCHER) -->
+        <activity android:name=".MainActivity" android:exported="true" />
+        <activity android:name=".HomeActivity" android:exported="true" />
+        <activity android:name=".FragmentBeranda" android:exported="true" />
+        <activity android:name=".FragmentOrder" android:exported="true" />
+        <activity android:name=".FragmentReport" android:exported="true" />
+        <activity android:name=".FragmentSetting" android:exported="true" />
+        <activity android:name=".TambahOrderanActivity" android:exported="true" />
+        <activity android:name=".TambahKontakAktivitas" android:exported="true" />
+        <activity android:name=".DetailKontakActivity" android:exported="true" />
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".FragmentOrder"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <!-- HAPUS bagian ini karena bukan activity -->
+        <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->
+        <!-- <activity android:name=".KontakItem" android:exported="true" /> -->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".FragmentReport"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-        android:name=".FragmentSetting"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
-        <meta-data
-            android:name="android.app.lib_name"
-            android:value="" />
-    </activity>
-        <activity
-            android:name=".TambahOrderanActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".TambahKontakAktivitas"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
     </application>
 </manifest>
