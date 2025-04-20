@@ -2,20 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="12dp"
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical">
-
     <ImageView
         android:id="@+id/iconPengaturan"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/ic_launcher_background"
-        android:tint="@color/black"
+        app:tint="@color/black"
         android:background="@drawable/background_yellow"
         android:padding="8dp" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -36,6 +36,18 @@
         <activity android:name=".TambahOrderanActivity" android:exported="true" />
         <activity android:name=".TambahKontakAktivitas" android:exported="true" />
         <activity android:name=".DetailKontakActivity" android:exported="true" />
+        <activity android:name=".PengaturanAkunActivity"/>
+        <activity android:name=".PengaturanTokoActivity"/>
+        <activity android:name=".PengaturanDurasiActivity"/>
+        <activity android:name=".PengaturanLayananActivity"/>
+        <activity android:name=".PengaturanParfumActivity"/>
+        <activity android:name=".PengaturanDiskonActivity"/>
+        <activity android:name=".PengaturanPelangganActivity"/>
+        <activity android:name=".PengaturanNotaActivity"/>
+        <activity android:name=".TambahDurasi"/>
+        <activity android:name=".DurasiAdapater"/>
+        <activity android:name=".DurasiData"/>
+        <activity android:name=".DurasiItem"/>
 
         <!-- HAPUS bagian ini karena bukan activity -->
         <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->

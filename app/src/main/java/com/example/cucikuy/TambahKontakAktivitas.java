@@ -48,7 +48,7 @@ public class TambahKontakAktivitas extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_in, 0);
 
         nama_kontak = findViewById(R.id.textFieldName);
         et_nama_kontak = findViewById(R.id.et_input_name);

@@ -13,18 +13,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class TambahOrderanActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
     private KontakAdapter kontakAdapter;
     private List<KontakItem> kontakItemList;
     private ImageView btn_add_contact;
@@ -42,20 +35,29 @@ public class TambahOrderanActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
 
-        // ✅ Inisialisasi list dulu
+        // Inisialisasi list dulu
         kontakItemList = new ArrayList<>();
 
-        // ✅ Baru bikin adapter setelah list terisi
+        // Baru bikin adapter setelah list terisi
         kontakAdapter = new KontakAdapter(kontakItemList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(kontakAdapter);
 
-        // Inisialisasi Firebase
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-
-        loadDataFromFirestore();
+        // Panggil FirestoreDataLoader untuk mengambil data kontak
+        KontakData dataLoader = new KontakData();
+        dataLoader.loadKontakData(new KontakData.DataCallback() {
+            @Override
+            public void onDataLoaded(List<KontakItem> kontakItemListFromFirestore) {
+                kontakItemList.clear();
+                kontakItemList.addAll(kontakItemListFromFirestore);
+                kontakAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onError(String error) {
+                Log.e("Firebase", error);
+            }
+        });
 
         kontakAdapter.setOnItemClickListener(kontakItem -> {
             Log.i("detailkontakbro", "klikk");
@@ -69,35 +71,6 @@ public class TambahOrderanActivity extends AppCompatActivity {
 
         btn_add_contact.setOnClickListener(v -> {
             startActivity(new Intent(TambahOrderanActivity.this, TambahKontakAktivitas.class));
-        });
-    }
-
-
-    private void loadDataFromFirestore() {
-        String userId = mAuth.getCurrentUser().getUid();
-        Log.i("datauser", userId);
-        CollectionReference kontakRef = db.collection("users").document(userId).collection("kontak");
-
-        kontakRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                kontakItemList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    String nama = document.getString("nama");
-                    String noHp = document.getString("nomor");
-                    String alamat = document.getString("alamat");
-                    int icon = R.drawable.person_24;
-
-                    // Pastikan data tidak null
-                    if (nama != null && noHp != null ) {
-                        kontakItemList.add(new KontakItem(icon, nama, noHp, alamat));
-                    } else {
-                        Log.w("Firebase", "Data kontak tidak lengkap.");
-                    }
-                }
-                kontakAdapter.notifyDataSetChanged();
-            } else {
-                Log.e("Firebase", "Gagal ambil data: " + task.getException());
-            }
         });
     }
 
