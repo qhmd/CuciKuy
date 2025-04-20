@@ -36,7 +36,7 @@ public class PengaturanDurasiActivity extends AppCompatActivity {
         durasiItemList = new ArrayList<>();
 
         //bikin adapter setelah list terisin
-        durasiAdapater = new DurasiAdapater(durasiItemList);
+        durasiAdapater = new DurasiAdapater(durasiItemList, DurasiAdapater.LAYOUT_DEFAULT);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(durasiAdapater);

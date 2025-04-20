@@ -60,14 +60,44 @@ public class TambahOrderanActivity extends AppCompatActivity {
         });
 
         kontakAdapter.setOnItemClickListener(kontakItem -> {
-            Log.i("detailkontakbro", "klikk");
-            Intent intent = new Intent(TambahOrderanActivity.this, DetailKontakActivity.class);
-            intent.putExtra("nama", kontakItem.getNama());
-            intent.putExtra("nomor", kontakItem.getNoTelpon());
-            intent.putExtra("alamat", kontakItem.getAlamat());
+            DurasiData durasiData = new DurasiData();
+            durasiData.loadDurasiData(new DurasiData.DataCallback() {
+                @Override
+                public void onDataLoaded(List<DurasiItem> durasiItemList) {
+                    View dialogView = getLayoutInflater().inflate(R.layout.dialog_durasi, null);
+                    RecyclerView rvDurasi = dialogView.findViewById(R.id.recyclerDialogDurasi);
+                    rvDurasi.setLayoutManager(new LinearLayoutManager(TambahOrderanActivity.this));
+                    DurasiAdapater adapter = new DurasiAdapater(durasiItemList, DurasiAdapater.LAYOUT_DIALOG);
 
-            startActivity(intent);
+                    rvDurasi.setAdapter(adapter);
+
+                    androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(TambahOrderanActivity.this)
+                            .setView(dialogView)
+                            .create();
+
+                    adapter.setOnItemClickListener(selectedDurasi -> {
+                        dialog.dismiss();
+
+                        Intent intent = new Intent(TambahOrderanActivity.this, DetailKontakActivity.class);
+                        intent.putExtra("nama", kontakItem.getNama());
+                        intent.putExtra("nomor", kontakItem.getNoTelpon());
+                        intent.putExtra("alamat", kontakItem.getAlamat());
+                        intent.putExtra("durasiNama", selectedDurasi.getNameDurasi());
+                        intent.putExtra("durasiJam", selectedDurasi.getJamDurasi());
+                        startActivity(intent);
+                    });
+
+                    dialog.show();
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e("DurasiDialog", "Gagal ambil durasi: " + error);
+                }
+            });
         });
+
+
 
         btn_add_contact.setOnClickListener(v -> {
             startActivity(new Intent(TambahOrderanActivity.this, TambahKontakAktivitas.class));
