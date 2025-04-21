@@ -118,7 +118,7 @@ public class IntroduceActivity extends AppCompatActivity {
                 send_btn.setEnabled(true);
                 darkOverlay.setVisibility(View.GONE);
                 Blurry.delete(blurTarget);
-                startActivity(new Intent(IntroduceActivity.this, TambahOrderanActivity.class));
+                startActivity(new Intent(IntroduceActivity.this, HomeActivity.class));
                 finish();
             }
         });
