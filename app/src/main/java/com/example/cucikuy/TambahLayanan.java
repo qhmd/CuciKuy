@@ -86,7 +86,7 @@ public class TambahLayanan extends AppCompatActivity {
                             btn_add_layanan.setEnabled(true);
                             darkOverlay.setVisibility(View.GONE);
                             Blurry.delete(blurTarget);
-                            Log.w("Firestore", "Gagal menyimpan kontak", e);
+                            Log.w("Firestore", "Gagal menyimpan layanan", e);
                         });
             }
 
