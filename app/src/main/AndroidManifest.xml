@@ -48,6 +48,7 @@
         <activity android:name=".DurasiAdapater"/>
         <activity android:name=".DurasiData"/>
         <activity android:name=".DurasiItem"/>
+        <activity android:name=".TambahLayanan"/>
 
         <!-- HAPUS bagian ini karena bukan activity -->
         <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->

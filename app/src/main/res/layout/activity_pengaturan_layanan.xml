@@ -49,21 +49,23 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/gray_input"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:background="#e9e9e9"
-            android:id="@+id/rv_data_durasi_layanan"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_durasi"
+            android:layout_width="match_parent"
             app:layout_constraintTop_toBottomOf="@+id/line_duration_bottom"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:background="?attr/colorPrimary"
+            app:tabMode="scrollable"
+            app:tabTextColor="@android:color/black"
+            app:tabIndicatorColor="@android:color/white"/>
         <LinearLayout
             android:id="@+id/searching_add"
             android:layout_marginHorizontal="15dp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginVertical="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_data_durasi_layanan"
+            app:layout_constraintTop_toBottomOf="@id/tab_layout_durasi"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
@@ -98,7 +100,7 @@
                     />
             </LinearLayout>
             <ImageView
-                android:id="@+id/tambah_kontak"
+                android:id="@+id/tambah_layanan"
                 android:layout_width="wrap_content"
                 android:background="@drawable/background_yellow"
                 android:paddingVertical="5dp"
