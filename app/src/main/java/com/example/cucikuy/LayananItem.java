@@ -46,4 +46,15 @@ public class LayananItem {
     public int getIconLaundry () {
         return  iconLaundry;
     }
+
+    private double jumlahKg = 0.01;
+
+    public double getJumlahKg() {
+        return jumlahKg;
+    }
+
+    public void setJumlahKg(double jumlahKg) {
+        this.jumlahKg = jumlahKg;
+    }
+
 }

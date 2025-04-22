@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PengaturanLayananActivity extends AppCompatActivity {
+    List<LayananItem> layananList = new ArrayList<>();
+
     // Deklarasi RecyclerView untuk menampilkan layanan
     RecyclerView rvLayanan;
     // Deklarasi TabLayout untuk menampilkan nama durasi
@@ -40,6 +42,9 @@ public class PengaturanLayananActivity extends AppCompatActivity {
         tabLayoutDurasi = findViewById(R.id.tab_layout_durasi);
         rvLayanan = findViewById(R.id.rv_layanan);
         rvLayanan.setLayoutManager(new LinearLayoutManager(this)); // Layout untuk RecyclerView
+        LayananPilihAdapter adapter = new LayananPilihAdapter(layananList);
+        rvLayanan.setAdapter(adapter);
+
 
         // Set listener untuk tombol tambah layanan
         btn_tambah_layanan.setOnClickListener(v -> {

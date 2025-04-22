@@ -21,25 +21,24 @@ public class DetailKontakActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_kontak);
+        setContentView(R.layout.activity_add_orderan);
 
         // Ambil data dari Intent
         String durasi = getIntent().getStringExtra("durasiNama");
         String namaKontak = getIntent().getStringExtra("nama");
         String noHp = getIntent().getStringExtra("nomor");
-        String alamat = getIntent().getStringExtra("alamat");
 
         // Set TextView
         tvNama = findViewById(R.id.tv_nama_kontak);
         tvNoHp = findViewById(R.id.tv_no_hp);
         tvAlamat = findViewById(R.id.tv_alamat);
+        TextView tvTotalHarga = findViewById(R.id.tv_total_harga);
 
         tvNama.setText(namaKontak);
-        tvNoHp.setText(noHp);
-        tvAlamat.setText(alamat);
+        tvNoHp.setText("+ " + noHp);
 
         // Setup RecyclerView
-        RecyclerView rvLayanan = findViewById(R.id.rv_layanan_detail);
+        RecyclerView rvLayanan = findViewById(R.id.rv_layanan_detail_orderan);
         rvLayanan.setLayoutManager(new LinearLayoutManager(this));
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -57,8 +56,6 @@ public class DetailKontakActivity extends AppCompatActivity {
                         String namaLayanan = doc.getId();
                         String harga = doc.getString("harga");
                         String durasiLayanan = doc.getString("durasi");
-                        Log.d("LayananDebug", "Document ID: " + doc.getId());
-                        Log.d("LayananDebug", "Field 'layanan': " + doc.getString("durasi"));
                         layananList.add(new LayananItem(
                                 namaLayanan,
                                 harga,
@@ -66,8 +63,14 @@ public class DetailKontakActivity extends AppCompatActivity {
                                 R.drawable.baseline_dry_cleaning_24
                         ));
                     }
-
+                    // Inisialisasi adapter
                     LayananPilihAdapter adapter = new LayananPilihAdapter(layananList);
+
+                    // Set listener total
+                    adapter.setOnTotalChangeListener(total -> {
+                        tvTotalHarga.setText("Total: Rp " + total);
+                    });
+
                     rvLayanan.setAdapter(adapter);
                 })
                 .addOnFailureListener(e -> {

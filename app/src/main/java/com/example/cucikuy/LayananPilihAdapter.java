@@ -1,11 +1,14 @@
 package com.example.cucikuy;
 
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.text.TextWatcher;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,14 +19,26 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
 
     private List<LayananItem> layananList;
 
+    private OnTotalChangeListener totalChangeListener;
+    private double[] jumlahKgList;
+
+    public void setOnTotalChangeListener(OnTotalChangeListener listener) {
+        this.totalChangeListener = listener;
+    }
+
     public LayananPilihAdapter(List<LayananItem> layananList) {
         this.layananList = layananList;
+        this.jumlahKgList = new double[layananList.size()];
+        for (int i = 0; i < jumlahKgList.length; i++) {
+            jumlahKgList[i] = 0.01;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNama, tvHarga, tvDurasi, tvJumlahKg;
+        TextView tvNama, tvHarga, tvDurasi;
+        EditText tvJumlahKg;
         ImageView imgIcon;
-        Button btnTambah, btnKurang;
+        ImageButton btnTambah, btnKurang;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -51,24 +66,70 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
 
-        // Set default jumlah kg
-        double[] jumlahKg = {0.01}; // Gunakan array supaya bisa diubah dalam inner class
-        holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", jumlahKg[0]));
+        holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", item.getJumlahKg()));
 
-        // Tombol tambah
-        holder.btnTambah.setOnClickListener(v -> {
-            jumlahKg[0] += 0.01;
-            holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", jumlahKg[0]));
+        holder.tvJumlahKg.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String clean = s.toString().replace("kg", "").trim();
+                try {
+                    double value = Double.parseDouble(clean);
+                    item.setJumlahKg(value);
+                    holder.tvJumlahKg.removeTextChangedListener(this);
+                    holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", value));
+                    holder.tvJumlahKg.setSelection(holder.tvJumlahKg.getText().toString().length() - 3); // cursor before " kg"
+                    holder.tvJumlahKg.addTextChangedListener(this);
+                    hitungTotal(); // ⬅️ total berubah di sini
+                } catch (NumberFormatException e) {
+                    // Invalid input, bisa diabaikan atau ditangani
+                }
+            }
         });
 
-        // Tombol kurang
+        holder.btnTambah.setOnClickListener(v -> {
+            double current = item.getJumlahKg();
+            current += 0.01;
+            item.setJumlahKg(current);
+            holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", current));
+            hitungTotal();
+        });
+
         holder.btnKurang.setOnClickListener(v -> {
-            if (jumlahKg[0] > 0.01) {
-                jumlahKg[0] -= 0.01;
-                holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", jumlahKg[0]));
+            double current = item.getJumlahKg();
+            if (current > 0.01) {
+                current -= 0.01;
+                item.setJumlahKg(current);
+                holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", current));
+                hitungTotal();
             }
         });
     }
+
+    private void hitungTotal() {
+        int total = 0;
+        for (LayananItem item : layananList) {
+            try {
+                int harga = Integer.parseInt(item.getHarga());
+                total += item.getJumlahKg() * harga;
+            } catch (NumberFormatException e) {
+                // skip jika harga tidak valid
+            }
+        }
+
+        if (totalChangeListener != null) {
+            totalChangeListener.onTotalChanged(total);
+        }
+    }
+
+
+    public interface OnTotalChangeListener {
+        void onTotalChanged(int total);
+    }
+
+
 
     @Override
     public int getItemCount() {
