@@ -67,9 +67,10 @@ public class DetailKontakActivity extends AppCompatActivity {
                     LayananPilihAdapter adapter = new LayananPilihAdapter(layananList);
 
                     // Set listener total
-                    adapter.setOnTotalChangeListener(total -> {
-                        tvTotalHarga.setText("Total: Rp " + total);
+                    adapter.setOnTotalChangeListener(totalFormatted -> {
+                        tvTotalHarga.setText("Total: " + totalFormatted);
                     });
+
 
                     rvLayanan.setAdapter(adapter);
                 })

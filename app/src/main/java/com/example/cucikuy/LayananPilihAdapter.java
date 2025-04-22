@@ -1,6 +1,7 @@
 package com.example.cucikuy;
 
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,30 +9,35 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.text.TextWatcher;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
 public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapter.ViewHolder> {
 
-    private List<LayananItem> layananList;
-
-    private OnTotalChangeListener totalChangeListener;
-    private double[] jumlahKgList;
-
-    public void setOnTotalChangeListener(OnTotalChangeListener listener) {
-        this.totalChangeListener = listener;
-    }
+    private final List<LayananItem> layananList;
+    private final double[] jumlahKgArray;
+    private OnTotalChangeListener onTotalChangeListener;
 
     public LayananPilihAdapter(List<LayananItem> layananList) {
         this.layananList = layananList;
-        this.jumlahKgList = new double[layananList.size()];
-        for (int i = 0; i < jumlahKgList.length; i++) {
-            jumlahKgList[i] = 0.01;
+        this.jumlahKgArray = new double[layananList.size()];
+        for (int i = 0; i < jumlahKgArray.length; i++) {
+            jumlahKgArray[i] = 0.00;
         }
+    }
+
+    public interface OnTotalChangeListener {
+        void onTotalChangedFormatted(String formattedTotal);
+    }
+
+
+    public void setOnTotalChangeListener(OnTotalChangeListener listener) {
+        this.onTotalChangeListener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -52,8 +58,9 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         }
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layanan_pilih, parent, false);
         return new ViewHolder(view);
     }
@@ -61,75 +68,77 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
+
         holder.tvNama.setText(item.getNama());
         holder.tvHarga.setText("Rp " + item.getHarga());
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
 
-        holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", item.getJumlahKg()));
+        // Tampilkan jumlah kg saat ini
+        holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f", jumlahKgArray[position]));
 
-        holder.tvJumlahKg.addTextChangedListener(new TextWatcher() {
+        // Hindari multiple text watchers (remove listener dulu)
+        if (holder.tvJumlahKg.getTag() instanceof TextWatcher) {
+            holder.tvJumlahKg.removeTextChangedListener((TextWatcher) holder.tvJumlahKg.getTag());
+        }
+
+        // Buat TextWatcher baru
+        TextWatcher watcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) {
+                int pos = holder.getAdapterPosition();
+                if (pos == RecyclerView.NO_POSITION) return;
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                String clean = s.toString().replace("kg", "").trim();
                 try {
-                    double value = Double.parseDouble(clean);
-                    item.setJumlahKg(value);
-                    holder.tvJumlahKg.removeTextChangedListener(this);
-                    holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", value));
-                    holder.tvJumlahKg.setSelection(holder.tvJumlahKg.getText().toString().length() - 3); // cursor before " kg"
-                    holder.tvJumlahKg.addTextChangedListener(this);
-                    hitungTotal(); // ⬅️ total berubah di sini
+                    double value = Double.parseDouble(s.toString());
+                    jumlahKgArray[pos] = value;
                 } catch (NumberFormatException e) {
-                    // Invalid input, bisa diabaikan atau ditangani
+                    jumlahKgArray[pos] = 0;
                 }
+                updateTotalHarga();
             }
-        });
+        };
 
+        holder.tvJumlahKg.addTextChangedListener(watcher);
+        holder.tvJumlahKg.setTag(watcher); // simpan untuk referensi nanti
+
+        // Tombol Tambah
         holder.btnTambah.setOnClickListener(v -> {
-            double current = item.getJumlahKg();
-            current += 0.01;
-            item.setJumlahKg(current);
-            holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", current));
-            hitungTotal();
+            int pos = holder.getAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION) {
+                jumlahKgArray[pos] += 0.01;
+                holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f", jumlahKgArray[pos]));
+            }
         });
 
+        // Tombol Kurang
         holder.btnKurang.setOnClickListener(v -> {
-            double current = item.getJumlahKg();
-            if (current > 0.01) {
-                current -= 0.01;
-                item.setJumlahKg(current);
-                holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f kg", current));
-                hitungTotal();
+            int pos = holder.getAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION && jumlahKgArray[pos] > 0.00) {
+                jumlahKgArray[pos] -= 0.01;
+                holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f", jumlahKgArray[pos]));
             }
         });
     }
 
-    private void hitungTotal() {
+
+    private void updateTotalHarga() {
         int total = 0;
-        for (LayananItem item : layananList) {
+        for (int i = 0; i < layananList.size(); i++) {
             try {
-                int harga = Integer.parseInt(item.getHarga());
-                total += item.getJumlahKg() * harga;
-            } catch (NumberFormatException e) {
-                // skip jika harga tidak valid
-            }
+                int harga = Integer.parseInt(layananList.get(i).getHarga());
+                total += (int) (harga * jumlahKgArray[i]);
+            } catch (NumberFormatException ignored) {}
         }
 
-        if (totalChangeListener != null) {
-            totalChangeListener.onTotalChanged(total);
+        if (onTotalChangeListener != null) {
+            // Format total ke Rupiah
+            NumberFormat rupiahFormat = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
+            String formattedTotal = rupiahFormat.format(total);
+            onTotalChangeListener.onTotalChangedFormatted(formattedTotal);
         }
     }
-
-
-    public interface OnTotalChangeListener {
-        void onTotalChanged(int total);
-    }
-
-
 
     @Override
     public int getItemCount() {
