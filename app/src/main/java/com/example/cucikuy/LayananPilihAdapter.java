@@ -74,7 +74,6 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         holder.tvHarga.setText("Rp " + item.getHarga());
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
-
         holder.tvJumlahKg.setText(removeTrailingZeros(jumlahKgArray[position]));
 
         if (holder.tvJumlahKg.getTag() instanceof TextWatcher) {
@@ -150,19 +149,6 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
     public int getItemCount() {
         return layananList.size();
     }
-
-    public List<LayananItem> getLayananTerpilih() {
-        List<LayananItem> terpilih = new ArrayList<>();
-        for (int i = 0; i < layananList.size(); i++) {
-            if (jumlahKgArray[i] > 0) {
-                LayananItem item = layananList.get(i);
-                item.setJumlahKg(jumlahKgArray[i]);
-                terpilih.add(item);
-            }
-        }
-        return terpilih;
-    }
-
 
     private String removeTrailingZeros(double value) {
         if (value == (long) value) {
