@@ -1,6 +1,8 @@
 package com.example.cucikuy;
 
-public class LayananItem {
+import java.io.Serializable;
+
+public class LayananItem implements Serializable {
     private String nama;
     private String harga;
     private String durasi;
@@ -47,5 +49,14 @@ public class LayananItem {
         return  iconLaundry;
     }
 
+    private double jumlahKg; // Tambahkan ini di bagian atas bersama field lain
+
+    public double getJumlahKg() {
+        return jumlahKg;
+    }
+
+    public void setJumlahKg(double jumlahKg) {
+        this.jumlahKg = jumlahKg;
+    }
 
 }

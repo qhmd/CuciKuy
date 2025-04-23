@@ -67,6 +67,7 @@ public class PengaturanDurasiActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PengaturanDurasiActivity.this, TambahDurasi.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

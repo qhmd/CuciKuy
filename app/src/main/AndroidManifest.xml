@@ -50,6 +50,9 @@
         <activity android:name=".DurasiItem"/>
         <activity android:name=".TambahLayanan"/>
         <activity android:name=".LayananPilihAdapter"/>
+        <activity android:name=".DetailOrderanActivity"/>
+        <activity android:name=".LayananDipilihAdapter"/>
+        <activity android:name=".LayananDipilihOrderan"/>
 
         <!-- HAPUS bagian ini karena bukan activity -->
         <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->

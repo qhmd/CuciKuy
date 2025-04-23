@@ -105,9 +105,9 @@
                 android:src="@drawable/baseline_navigate_next_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldDurasi"
-                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="Waktu Durasi"
                 app:suffixText="Jam"
@@ -118,7 +118,10 @@
                     android:layout_height="match_parent"
                     android:paddingStart="12dp"
                     android:paddingTop="0dp"
+                    android:paddingVertical="7dp"
+                    android:inputType="numberDecimal"
                     android:paddingBottom="0dp"
+                    android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:paddingEnd="10dp"
                     android:textSize="20sp" />

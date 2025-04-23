@@ -58,10 +58,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_layanan_detail_orderan"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="0dp"
             android:padding="8dp"
+            android:clipToPadding="false"
+            android:overScrollMode="ifContentScrolls"
             app:layout_constraintTop_toBottomOf="@id/line_add_orderan"
+            app:layout_constraintBottom_toTopOf="@id/detail_kontak_pesanan"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

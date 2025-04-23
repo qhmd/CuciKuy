@@ -13,7 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,7 +36,6 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
     public interface OnTotalChangeListener {
         void onTotalChangedFormatted(String formattedTotal);
     }
-
 
     public void setOnTotalChangeListener(OnTotalChangeListener listener) {
         this.onTotalChangeListener = listener;
@@ -74,15 +75,12 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
 
-        // Tampilkan jumlah kg saat ini
-        holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f", jumlahKgArray[position]));
+        holder.tvJumlahKg.setText(removeTrailingZeros(jumlahKgArray[position]));
 
-        // Hindari multiple text watchers (remove listener dulu)
         if (holder.tvJumlahKg.getTag() instanceof TextWatcher) {
             holder.tvJumlahKg.removeTextChangedListener((TextWatcher) holder.tvJumlahKg.getTag());
         }
 
-        // Buat TextWatcher baru
         TextWatcher watcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -101,27 +99,24 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         };
 
         holder.tvJumlahKg.addTextChangedListener(watcher);
-        holder.tvJumlahKg.setTag(watcher); // simpan untuk referensi nanti
+        holder.tvJumlahKg.setTag(watcher);
 
-        // Tombol Tambah
         holder.btnTambah.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
                 jumlahKgArray[pos] += 0.01;
-                holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f", jumlahKgArray[pos]));
+                holder.tvJumlahKg.setText(removeTrailingZeros(jumlahKgArray[pos]));
             }
         });
 
-        // Tombol Kurang
         holder.btnKurang.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION && jumlahKgArray[pos] > 0.00) {
                 jumlahKgArray[pos] -= 0.01;
-                holder.tvJumlahKg.setText(String.format(Locale.US, "%.2f", jumlahKgArray[pos]));
+                holder.tvJumlahKg.setText(removeTrailingZeros(jumlahKgArray[pos]));
             }
         });
     }
-
 
     private void updateTotalHarga() {
         int total = 0;
@@ -133,15 +128,47 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         }
 
         if (onTotalChangeListener != null) {
-            // Format total ke Rupiah
             NumberFormat rupiahFormat = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
             String formattedTotal = rupiahFormat.format(total);
             onTotalChangeListener.onTotalChangedFormatted(formattedTotal);
         }
     }
 
+    public List<LayananItem> getSelectedLayanan() {
+        List<LayananItem> selected = new ArrayList<>();
+        for (int i = 0; i < layananList.size(); i++) {
+            if (jumlahKgArray[i] > 0) {
+                LayananItem item = layananList.get(i);
+                item.setJumlahKg(jumlahKgArray[i]);
+                selected.add(item);
+            }
+        }
+        return selected;
+    }
+
     @Override
     public int getItemCount() {
         return layananList.size();
+    }
+
+    public List<LayananItem> getLayananTerpilih() {
+        List<LayananItem> terpilih = new ArrayList<>();
+        for (int i = 0; i < layananList.size(); i++) {
+            if (jumlahKgArray[i] > 0) {
+                LayananItem item = layananList.get(i);
+                item.setJumlahKg(jumlahKgArray[i]);
+                terpilih.add(item);
+            }
+        }
+        return terpilih;
+    }
+
+
+    private String removeTrailingZeros(double value) {
+        if (value == (long) value) {
+            return String.format(Locale.US, "%d", (long) value);
+        } else {
+            return String.format(Locale.US, "%.2f", value);
+        }
     }
 }
