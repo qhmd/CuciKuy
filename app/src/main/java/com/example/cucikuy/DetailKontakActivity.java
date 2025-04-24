@@ -93,8 +93,12 @@ public class DetailKontakActivity extends AppCompatActivity {
                 List<LayananItem> selectedLayanan = adapter.getSelectedLayanan();
                 Intent intent = new Intent(DetailKontakActivity.this, DetailOrderanActivity.class);
 
-                intent.putExtra("selectedLayanan", (Serializable) selectedLayanan); // [✔️ Kirim layanan yang dipilih]
                 intent.putExtra("totalHarga", totalHarga); // [✔️ Kirim total harga]
+                intent.putExtra("nama", namaKontak);
+                intent.putExtra("noHp", noHp);
+                intent.putExtra("namaDurasi", durasi);
+
+                intent.putExtra("selectedLayanan", (Serializable) selectedLayanan); // [✔️ Kirim layanan yang dipilih]
                 for (LayananItem item : selectedLayanan) {
                     Log.i("apadipilih",
                             "Nama: " + item.getNama() +

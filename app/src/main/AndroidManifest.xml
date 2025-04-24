@@ -18,7 +18,7 @@
 
         <!-- LAUNCHER PERTAMA SAAT APLIKASI DIBUKA -->
         <activity
-            android:name=".IntroduceActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
         </activity>
 
         <!-- AKTIVITAS LAIN (tidak perlu intent-filter MAIN/LAUNCHER) -->
-        <activity android:name=".MainActivity" android:exported="true" />
+        <activity android:name=".IntroduceActivity" android:exported="true" />
         <activity android:name=".HomeActivity" android:exported="true" />
         <activity android:name=".FragmentBeranda" android:exported="true" />
         <activity android:name=".FragmentOrder" android:exported="true" />
@@ -50,9 +50,9 @@
         <activity android:name=".DurasiItem"/>
         <activity android:name=".TambahLayanan"/>
         <activity android:name=".LayananPilihAdapter"/>
+        <activity android:name=".LayananOrderAdapter"/>
         <activity android:name=".DetailOrderanActivity"/>
-        <activity android:name=".LayananDipilihAdapter"/>
-        <activity android:name=".LayananDipilihOrderan"/>
+
 
         <!-- HAPUS bagian ini karena bukan activity -->
         <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->

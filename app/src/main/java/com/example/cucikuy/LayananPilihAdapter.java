@@ -70,16 +70,27 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
 
+        // Menampilkan data layanan
         holder.tvNama.setText(item.getNama());
-        holder.tvHarga.setText("Rp " + item.getHarga());
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
-        holder.tvJumlahKg.setText(removeTrailingZeros(jumlahKgArray[position]));
 
+        // Menentukan harga per layanan berdasarkan berat (kg)
+        double jumlahKg = jumlahKgArray[position];
+        double hargaPerKg = Double.parseDouble(item.getHarga()); // harga per kg
+        double totalHarga = jumlahKg * hargaPerKg; // total harga
+
+        // Menampilkan total harga untuk layanan ini
+        holder.tvHarga.setText("Rp " + NumberFormat.getInstance(new Locale("in", "ID")).format(totalHarga));
+
+        holder.tvJumlahKg.setText(removeTrailingZeros(jumlahKg));
+
+        // Jika ada TextWatcher yang sebelumnya ditambahkan, hapus terlebih dahulu
         if (holder.tvJumlahKg.getTag() instanceof TextWatcher) {
             holder.tvJumlahKg.removeTextChangedListener((TextWatcher) holder.tvJumlahKg.getTag());
         }
 
+        // Menambahkan TextWatcher untuk edit jumlahKg
         TextWatcher watcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -100,6 +111,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         holder.tvJumlahKg.addTextChangedListener(watcher);
         holder.tvJumlahKg.setTag(watcher);
 
+        // Tombol tambah dan kurang untuk mengubah jumlahKg
         holder.btnTambah.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
@@ -116,6 +128,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
             }
         });
     }
+
 
     private void updateTotalHarga() {
         int total = 0;
@@ -157,4 +170,15 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
             return String.format(Locale.US, "%.2f", value);
         }
     }
+    // Menambahkan metode untuk mengambil harga total berdasarkan jumlah kg yang dimasukkan
+    public double getTotalHargaPerLayanan(int position) {
+        if (position < 0 || position >= layananList.size()) {
+            return 0.0; // Menghindari IndexOutOfBoundsException
+        }
+
+        double jumlahKg = jumlahKgArray[position];
+        double hargaPerKg = Double.parseDouble(layananList.get(position).getHarga()); // Harga per kg
+        return jumlahKg * hargaPerKg; // Mengembalikan total harga per layanan
+    }
+
 }
