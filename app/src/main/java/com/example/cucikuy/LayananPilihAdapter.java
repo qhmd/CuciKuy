@@ -73,17 +73,8 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         // Menampilkan data layanan
         holder.tvNama.setText(item.getNama());
         holder.tvDurasi.setText(item.getDurasi());
+        holder.tvHarga.setText("Rp " + item.getHarga());
         holder.imgIcon.setImageResource(item.getIconLaundry());
-
-        // Menentukan harga per layanan berdasarkan berat (kg)
-        double jumlahKg = jumlahKgArray[position];
-        double hargaPerKg = Double.parseDouble(item.getHarga()); // harga per kg
-        double totalHarga = jumlahKg * hargaPerKg; // total harga
-
-        // Menampilkan total harga untuk layanan ini
-        holder.tvHarga.setText("Rp " + NumberFormat.getInstance(new Locale("in", "ID")).format(totalHarga));
-
-        holder.tvJumlahKg.setText(removeTrailingZeros(jumlahKg));
 
         // Jika ada TextWatcher yang sebelumnya ditambahkan, hapus terlebih dahulu
         if (holder.tvJumlahKg.getTag() instanceof TextWatcher) {
@@ -151,12 +142,24 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         for (int i = 0; i < layananList.size(); i++) {
             if (jumlahKgArray[i] > 0) {
                 LayananItem item = layananList.get(i);
-                item.setJumlahKg(jumlahKgArray[i]);
+                double jumlahKg = jumlahKgArray[i];
+                item.setJumlahKg(jumlahKg);
+
+                // Hitung dan set total harga
+                try {
+                    double hargaPerKg = Double.parseDouble(item.getHarga());
+                    double totalHarga = hargaPerKg * jumlahKg;
+                    item.setTotalHarga(totalHarga); // Pastikan LayananItem punya method ini
+                } catch (NumberFormatException e) {
+                    item.setTotalHarga(0); // Fallback
+                }
+
                 selected.add(item);
             }
         }
         return selected;
     }
+
 
     @Override
     public int getItemCount() {

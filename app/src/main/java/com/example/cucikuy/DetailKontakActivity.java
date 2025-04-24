@@ -79,8 +79,6 @@ public class DetailKontakActivity extends AppCompatActivity {
                         tvTotalHarga.setText("Total: " + totalFormatted);
                         totalHarga = totalFormatted; // [✔️ Simpan total harga di variabel global untuk dikirim]
                     });
-
-
                     rvLayanan.setAdapter(adapter);
                 })
                 .addOnFailureListener(e -> {
@@ -104,6 +102,7 @@ public class DetailKontakActivity extends AppCompatActivity {
                             "Nama: " + item.getNama() +
                                     ", Harga: " + item.getHarga() +
                                     ", Durasi: " + item.getDurasi() +
+                                    ", Total Harga: " + item.getTotalHarga() +
                                     ", JumlahKg: " + item.getJumlahKg());
                 }
                 Log.i("apadipilih", totalHarga);

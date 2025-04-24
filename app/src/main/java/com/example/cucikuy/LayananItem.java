@@ -7,6 +7,9 @@ public class LayananItem implements Serializable {
     private String harga;
     private String durasi;
     private int iconLaundry;
+    private double jumlahKg;
+    private double totalHarga;
+    private double totalHargaLayanan;
     public LayananItem() {
         // Diperlukan untuk Firebase (default constructor)
     }
@@ -49,7 +52,6 @@ public class LayananItem implements Serializable {
         return  iconLaundry;
     }
 
-    private double jumlahKg; // Tambahkan ini di bagian atas bersama field lain
 
     public double getJumlahKg() {
         return jumlahKg;
@@ -57,6 +59,14 @@ public class LayananItem implements Serializable {
 
     public void setJumlahKg(double jumlahKg) {
         this.jumlahKg = jumlahKg;
+    }
+
+    public void setTotalHarga(double totalHargaLayanan) {
+        this.totalHargaLayanan = totalHargaLayanan;
+    }
+
+    public double getTotalHarga() {
+        return totalHargaLayanan;
     }
 
 }
