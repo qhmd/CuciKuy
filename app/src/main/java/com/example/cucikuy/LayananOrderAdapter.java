@@ -18,7 +18,7 @@ public class LayananOrderAdapter extends RecyclerView.Adapter<LayananOrderAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNama, tvHarga, tvDurasi, tvJumlahKg;
+        TextView tvNama, tvHarga, tvDurasi, tvJumlahKg, tvHargaLayanan;
         ImageView imgIcon;
 
         public ViewHolder(View itemView) {
@@ -28,6 +28,7 @@ public class LayananOrderAdapter extends RecyclerView.Adapter<LayananOrderAdapte
             tvDurasi = itemView.findViewById(R.id.tvDurasi);
             tvJumlahKg = itemView.findViewById(R.id.tvJumlahKg);
             imgIcon = itemView.findViewById(R.id.img_icon);
+            tvHargaLayanan = itemView.findViewById(R.id.tvHargaLayanan);
         }
     }
 
@@ -40,14 +41,12 @@ public class LayananOrderAdapter extends RecyclerView.Adapter<LayananOrderAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
-
-
-
         holder.tvNama.setText(item.getNama());
         holder.tvHarga.setText("Rp " + item.getHarga());
         holder.tvDurasi.setText(item.getDurasi() + " hari");
         holder.tvJumlahKg.setText(item.getJumlahKg() + " Kg");
         holder.imgIcon.setImageResource(item.getIconLaundry());
+        holder.tvHargaLayanan.setText("Rp " + item.getTotalHarga());
     }
 
     @Override
