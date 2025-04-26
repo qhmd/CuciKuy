@@ -33,7 +33,6 @@ public class DetailOrderanActivity extends AppCompatActivity {
         tvNama.setText(nama);
         tvTotalHarga.setText(totalHarga);
         tvNoHp.setText(noHp);
-
         RecyclerView recyclerView = findViewById(R.id.rv_layanan_dipilih);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ArrayList<LayananItem> selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");

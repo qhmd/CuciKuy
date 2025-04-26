@@ -63,6 +63,7 @@ public class TambahOrderanActivity extends AppCompatActivity {
 
         btn_add_contact.setOnClickListener(v -> {
             startActivity(new Intent(TambahOrderanActivity.this, TambahKontakAktivitas.class));
+            finish();
         });
     }
 

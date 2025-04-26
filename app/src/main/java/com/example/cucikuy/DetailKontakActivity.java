@@ -127,6 +127,7 @@ public class DetailKontakActivity extends AppCompatActivity {
                         Log.i("apadipilih", totalHarga);
                         sendDetailOrder();
                         startActivity(intent);
+                        finish();
                     }
                 })
                 .setNegativeButton("Tidak", (dialog, which) -> {});
@@ -156,25 +157,24 @@ public class DetailKontakActivity extends AppCompatActivity {
                 pesanan.put("alamat", alamat);
             }
         }
-
-
-
         db.collection("users")
                 .document(userId)
                 .collection("pesanan")
+                .document("statusPesanan")
+                .collection("antrian")
                 .document(noNota)
                 .set(pesanan)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firestore", "Pesanan utama berhasil dikirim");
-
                     // Setelah pesanan disimpan, simpan layanan-layanan
                     List<LayananItem> layananTerpilih = adapter.getSelectedLayanan();
                     CollectionReference layananRef = db.collection("users")
                             .document(userId)
                             .collection("pesanan")
+                            .document("statusPesanan")
+                            .collection("antrian")
                             .document(noNota)
                             .collection("layanan");
-
                     for (LayananItem item : layananTerpilih) {
                         Map<String, Object> layananData = new HashMap<>();
                         layananData.put("nama", item.getNama());
