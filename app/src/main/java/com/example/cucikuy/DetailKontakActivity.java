@@ -1,6 +1,7 @@
 package com.example.cucikuy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +32,7 @@ import java.util.TimeZone;
 
 public class DetailKontakActivity extends AppCompatActivity {
     private TextView tvNama, tvNoHp, tvAlamat;
-    String namaKontak, durasi, noHp;
+    String namaKontak, durasi, noHp, durasiJam;
     String userId;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button btn_tambah_order;
@@ -47,7 +49,7 @@ public class DetailKontakActivity extends AppCompatActivity {
         durasi = getIntent().getStringExtra("durasiNama");
         namaKontak = getIntent().getStringExtra("nama");
         noHp = getIntent().getStringExtra("nomor");
-
+        durasiJam = getIntent().getStringExtra("durasiJam");
         // Set TextView
         tvNama = findViewById(R.id.tv_nama_kontak);
         tvNoHp = findViewById(R.id.tv_no_hp);
@@ -144,11 +146,36 @@ public class DetailKontakActivity extends AppCompatActivity {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8")); // atau "Asia/Makassar" juga bisa
         String tanggal = sdf.format(new Date());
 
-        String noNota = "CUCI-" + new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date()) + "-0001";
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // Ambil tanggal hari ini
+        String today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
+        // Ambil tanggal terakhir disimpan
+        String lastDate = prefs.getString("lastOrderDate", "");
+        // Cek apakah hari ini berbeda dari terakhir
+        if (!today.equals(lastDate)) {
+            // Kalau beda tanggal, reset jmlOrder ke 1
+            editor.putInt("jmlOrder", 1);
+            editor.putString("lastOrderDate", today);
+            editor.apply();
+        }
+        // Ambil jmlOrder sekarang
+        int jmlOrder = prefs.getInt("jmlOrder", 1);
+        Log.i("jmlhorder", String.valueOf(jmlOrder));
+        String noNota = "CUCI-" + new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date()) + jmlOrder;
+        editor.putInt("jmlOrder", jmlOrder + 1);
+        editor.apply();
+
+        //estiminasi selesai
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(durasiJam));
+        String estiminasiSelesai = sdf.format(calendar.getTime());
 
         Map<String, Object> pesanan = new HashMap<>();
         pesanan.put("no_nota", noNota);
         pesanan.put("tanggal", tanggal);
+        pesanan.put("est_selesai", estiminasiSelesai);
         pesanan.put("nama_pelanggan", tvNama.getText().toString());
         pesanan.put("no_hp", tvNoHp.getText().toString());
         if (tvAlamat != null) {
@@ -165,6 +192,7 @@ public class DetailKontakActivity extends AppCompatActivity {
                 .document(noNota)
                 .set(pesanan)
                 .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", durasiJam);
                     Log.d("Firestore", "Pesanan utama berhasil dikirim");
                     // Setelah pesanan disimpan, simpan layanan-layanan
                     List<LayananItem> layananTerpilih = adapter.getSelectedLayanan();
@@ -198,3 +226,4 @@ public class DetailKontakActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("Firestore", "Gagal mengirim pesanan", e));
     }
 }
+

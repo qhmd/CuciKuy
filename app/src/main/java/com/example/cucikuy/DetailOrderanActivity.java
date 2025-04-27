@@ -2,10 +2,12 @@ package com.example.cucikuy;
 
 import static android.content.Intent.getIntent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +42,18 @@ public class DetailOrderanActivity extends AppCompatActivity {
             LayananOrderAdapter adapter = new LayananOrderAdapter(selectedLayanan);
             recyclerView.setAdapter(adapter);
         }
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(DetailOrderanActivity.this, HomeActivity.class);
+                intent.putExtra("navigateTo", "order");
+                startActivity(intent);
+                finish();
+            }
+        };
+
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 }
 

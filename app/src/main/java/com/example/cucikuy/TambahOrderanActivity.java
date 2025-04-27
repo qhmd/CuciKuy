@@ -71,6 +71,7 @@ public class TambahOrderanActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in, 0);
+        finish();
     }
 
     private void showDurasiDialog(KontakItem kontakItem) {

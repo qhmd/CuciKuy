@@ -22,9 +22,7 @@ public class FragmentOrder extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-
     private ImageView tambah_order_btn;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
