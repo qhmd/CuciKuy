@@ -210,18 +210,13 @@ public class DetailKontakActivity extends AppCompatActivity {
                         layananData.put("harga_per_kg", Double.parseDouble(item.getHarga()));
                         layananData.put("jumlah_kg", item.getJumlahKg());
                         layananData.put("total_harga", Double.parseDouble(item.getHarga()) * item.getJumlahKg());
-
-
                         layananRef.add(layananData)
-
                                 .addOnSuccessListener(docRef -> {
                                     Log.d("Firestore", "Layanan berhasil ditambahkan");
                                     Log.d("FirestorePath", "Path: users/" + userId + "/pesanan/" + noNota + "/layanan");
-
                                 })
                                 .addOnFailureListener(e -> Log.e("Firestore", "Gagal menambahkan layanan", e));
                     }
-
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Gagal mengirim pesanan", e));
     }

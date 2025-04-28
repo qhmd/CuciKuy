@@ -17,9 +17,11 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FragmentAntrian extends Fragment {
     private RecyclerView recyclerView;
@@ -28,9 +30,6 @@ public class FragmentAntrian extends Fragment {
     String userId;
 
     private FirebaseFirestore db;
-    db = FirebaseFirestore.getInstance();
-    userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
 
     @Nullable
     @Override
@@ -38,6 +37,9 @@ public class FragmentAntrian extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_antrian, container, false);
+        db = FirebaseFirestore.getInstance();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         recyclerView = view.findViewById(R.id.recyclerViewAntrian);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderList = new ArrayList<>();
@@ -51,24 +53,35 @@ public class FragmentAntrian extends Fragment {
     }
 
     private void fetchOrders() {
-
         db.collection("users")
                 .document(userId)
                 .collection("pesanan")
                 .document("statusPesanan")
                 .collection("antrian")
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    if (!querySnapshot.isEmpty()) {
-                        for (QueryDocumentSnapshot doc : querySnapshot) {
-                            OrderItem orderItem = doc.toObject(OrderItem.class);
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                            OrderItem orderItem = document.toObject(OrderItem.class);
                             orderList.add(orderItem);
+                            Gson gson = new Gson();
+                            String json = gson.toJson(orderItem);
+                            Log.i("fetchOrders", json);
+
+                            orderItem.printLog();
+                            // Ambil data field dari nota
+                            String namaPelanggan = document.getString("nama_pelanggan");
+                            String noHp = document.getString("no_hp");
+                            String noNota = document.getString("no_nota");
+                            String tanggal = document.getString("tanggal");
+                            Log.d("Nota", "Nama: " + namaPelanggan + ", No HP: " + noHp + ", No Nota: " + noNota + ", Tanggal: " + tanggal);
+                            // Ambil data dari subkoleksi "layanan"
                         }
-                        adapter.notifyDataSetChanged();
                     }
+                    adapter.notifyDataSetChanged();
                 })
-                .addOnFailureListener(e-> {
-                    Log.e("Firestore", "Error: " + e.getMessage());
+                .addOnFailureListener(e -> {
+                    Log.e("Antrian", "Gagal ambil antrian", e);
                 });
     }
 }

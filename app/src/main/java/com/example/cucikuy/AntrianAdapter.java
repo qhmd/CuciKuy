@@ -1,5 +1,6 @@
 package com.example.cucikuy;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,9 @@ public class AntrianAdapter extends RecyclerView.Adapter<AntrianAdapter.AntrianV
     @Override
     public void onBindViewHolder(@NonNull AntrianViewHolder holder, int position) {
         OrderItem order = orderList.get(position);
+        Gson gson = new Gson();
+        String json = gson.toJson(order);
+        Log.i("dataadapter", json);
         holder.noNota.setText(order.getNoNota());
         holder.jenisDurasi.setText(order.getJenisDurasi());
         holder.namaPengguna.setText(order.getNamaPengguna());
