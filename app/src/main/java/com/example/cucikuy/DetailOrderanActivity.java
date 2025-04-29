@@ -27,14 +27,22 @@ public class DetailOrderanActivity extends AppCompatActivity {
         String nama = getIntent().getStringExtra("nama");
         String totalHarga = getIntent().getStringExtra("totalHarga");
         String noHp = getIntent().getStringExtra("noHp");
+        String tanggalMasuk = getIntent().getStringExtra("tanggalMasuk");
+        String estimasiSelesai = getIntent().getStringExtra("estiminasiSelesai");
 
         TextView tvNama = findViewById(R.id.tv_nama_kontak);
         TextView tvTotalHarga = findViewById(R.id.total_harga);
         TextView tvNoHp = findViewById(R.id.tv_no_hp);
+        TextView tvTanggalMsuk = findViewById(R.id.tanggal_masuk);
+        TextView tvEstSelesai = findViewById(R.id.est_seleai);
+
 
         tvNama.setText(nama);
         tvTotalHarga.setText(totalHarga);
         tvNoHp.setText(noHp);
+        tvTanggalMsuk.setText(tanggalMasuk);
+        tvEstSelesai.setText(estimasiSelesai);
+
         RecyclerView recyclerView = findViewById(R.id.rv_layanan_dipilih);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ArrayList<LayananItem> selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");

@@ -9,23 +9,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class FragmentAntrian extends Fragment {
     private RecyclerView recyclerView;
-    private AntrianAdapter adapter;
+    private DetailKontakActivity.AntrianAdapter adapter;
     private ArrayList<OrderItem> orderList;
     String userId;
 
@@ -41,12 +38,14 @@ public class FragmentAntrian extends Fragment {
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         recyclerView = view.findViewById(R.id.recyclerViewAntrian);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setHasFixedSize(true);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderList = new ArrayList<>();
-        adapter = new AntrianAdapter(orderList);
+        adapter = new DetailKontakActivity.AntrianAdapter(orderList);
         recyclerView.setAdapter(adapter);
-
-        db = FirebaseFirestore.getInstance();
         fetchOrders();
 
         return view;

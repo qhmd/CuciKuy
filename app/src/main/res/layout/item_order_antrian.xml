@@ -2,17 +2,28 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginVertical="10dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_marginHorizontal="20dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/iconOrderan"
+        android:background="@drawable/background_yellow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_list_antrian"
+        app:srcCompat="@drawable/baseline_dry_cleaning_24" />
 
     <LinearLayout
         android:id="@+id/header_list_antrian"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/textNoNota"
             android:layout_width="wrap_content"
@@ -22,65 +33,65 @@
         <TextView
             android:id="@+id/textJenisDurasi"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold|italic"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="TextView" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/iconOrderan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_list_antrian"
-        app:srcCompat="@drawable/baseline_dry_cleaning_24" />
-
     <LinearLayout
+        android:layout_marginLeft="10dp"
         android:id="@+id/detail_pelanggan_lin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/iconOrderan"
+        app:layout_constraintBottom_toBottomOf="@id/iconOrderan"
         app:layout_constraintTop_toBottomOf="@+id/header_list_antrian">
 
         <TextView
             android:id="@+id/textNamaPengguna"
             android:layout_width="match_parent"
+            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/textTanggalMasuk"
             android:layout_width="match_parent"
+            android:textSize="10dp"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/textEstimasiSelesai"
+            android:textSize="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/hargaPesananLin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="15dp"
         app:layout_constraintStart_toEndOf="@+id/detail_pelanggan_lin"
         app:layout_constraintTop_toBottomOf="@+id/header_list_antrian">
 
         <TextView
             android:id="@+id/textTotalPembayaran"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15dp"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/textStatusPembayaran"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/red"
             android:text="TextView" />
     </LinearLayout>
 

@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -18,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -32,7 +38,7 @@ import java.util.TimeZone;
 
 public class DetailKontakActivity extends AppCompatActivity {
     private TextView tvNama, tvNoHp, tvAlamat;
-    String namaKontak, durasi, noHp, durasiJam;
+    String namaKontak, durasi, noHp, durasiJam, estiminasiSelesai, tanggal;
     String userId;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button btn_tambah_order;
@@ -118,6 +124,8 @@ public class DetailKontakActivity extends AppCompatActivity {
                         intent.putExtra("nama", namaKontak);
                         intent.putExtra("noHp", noHp);
                         intent.putExtra("namaDurasi", durasi);
+                        intent.putExtra("tanggalMasuk", tanggal);
+                        intent.putExtra("estiminasiSelesai",estiminasiSelesai);
 
                         intent.putExtra("selectedLayanan", (Serializable) selectedLayanan); // [✔️ Kirim layanan yang dipilih]
                         for (LayananItem item : selectedLayanan) {
@@ -146,7 +154,7 @@ public class DetailKontakActivity extends AppCompatActivity {
     public void sendDetailOrder () {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8")); // atau "Asia/Makassar" juga bisa
-        String tanggal = sdf.format(new Date());
+        tanggal = sdf.format(new Date());
 
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -172,7 +180,7 @@ public class DetailKontakActivity extends AppCompatActivity {
         //estiminasi selesai
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(durasiJam));
-        String estiminasiSelesai = sdf.format(calendar.getTime());
+        estiminasiSelesai = sdf.format(calendar.getTime());
 
         Map<String, Object> pesanan = new HashMap<>();
         pesanan.put("no_nota", noNota);
@@ -224,6 +232,61 @@ public class DetailKontakActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Gagal mengirim pesanan", e));
+    }
+
+    public static class AntrianAdapter extends RecyclerView.Adapter<AntrianAdapter.AntrianViewHolder> {
+
+        private ArrayList<OrderItem> orderList;
+
+        public AntrianAdapter(ArrayList<OrderItem> orderList) {
+            this.orderList = orderList;
+        }
+
+        @NonNull
+        @Override
+        public AntrianViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_order_antrian, parent, false); // item_order.xml adalah layout untuk 1 data
+            return new AntrianViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull AntrianViewHolder holder, int position) {
+            OrderItem order = orderList.get(position);
+            Gson gson = new Gson();
+            String json = gson.toJson(order);
+            Log.i("dataadapter", json);
+            holder.noNota.setText(order.getNo_nota());
+            holder.jenisDurasi.setText(order.getJenis_durasi());
+            holder.namaPengguna.setText(order.getNama_pelanggan());
+            holder.tanggalMasuk.setText("Masuk : " + order.getTanggal());
+            holder.estimasiSelesai.setText("Est Sel : "+ order.getEst_selesai());
+            holder.totalPembayaran.setText(order.getTotal_bayar());
+            holder.statusPembayaran.setText(order.isBelum_bayar() ? "Belum Bayar" : "Sudah Bayar");
+        }
+
+        @Override
+        public int getItemCount() {
+            return orderList.size();
+        }
+
+        // INI YANG BELUM ADA: Tambahkan ViewHolder di sini
+        static class AntrianViewHolder extends RecyclerView.ViewHolder {
+            ImageView gambar;
+            TextView noNota, jenisDurasi, namaPengguna, tanggalMasuk, estimasiSelesai, totalPembayaran, statusPembayaran;
+
+            public AntrianViewHolder(@NonNull View itemView) {
+                super(itemView);
+                gambar = itemView.findViewById(R.id.iconOrderan);
+                noNota = itemView.findViewById(R.id.textNoNota);
+                jenisDurasi = itemView.findViewById(R.id.textJenisDurasi);
+                namaPengguna = itemView.findViewById(R.id.textNamaPengguna);
+                tanggalMasuk = itemView.findViewById(R.id.textTanggalMasuk);
+                estimasiSelesai = itemView.findViewById(R.id.textEstimasiSelesai);
+                totalPembayaran = itemView.findViewById(R.id.textTotalPembayaran);
+                statusPembayaran = itemView.findViewById(R.id.textStatusPembayaran);
+            }
+        }
     }
 }
 

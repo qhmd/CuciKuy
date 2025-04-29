@@ -185,6 +185,7 @@
                     android:text="Tanggal Masuk" />
 
                 <TextView
+                    android:id="@+id/tanggal_masuk"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -211,6 +212,7 @@
                     android:text="Estiminasi Selesai" />
 
                 <TextView
+                    android:id="@+id/est_seleai"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
