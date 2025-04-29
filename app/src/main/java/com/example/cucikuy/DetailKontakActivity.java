@@ -37,6 +37,7 @@ public class DetailKontakActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button btn_tambah_order;
     private List<LayananItem> layananList;
+    private Boolean belum_bayar;
     private LayananPilihAdapter adapter; // [✔️ Tambahan agar adapter bisa diakses di luar callback Firestore]
     private String totalHarga = ""; // [✔️ Tambahan untuk menyimpan total harga secara global]
 
@@ -45,6 +46,7 @@ public class DetailKontakActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_orderan);
 
+        belum_bayar = true;
         // Ambil data dari Intent
         durasi = getIntent().getStringExtra("durasiNama");
         namaKontak = getIntent().getStringExtra("nama");
@@ -175,9 +177,12 @@ public class DetailKontakActivity extends AppCompatActivity {
         Map<String, Object> pesanan = new HashMap<>();
         pesanan.put("no_nota", noNota);
         pesanan.put("tanggal", tanggal);
+        pesanan.put("jenis_durasi", durasi);
+        pesanan.put("total_bayar", totalHarga);
         pesanan.put("est_selesai", estiminasiSelesai);
         pesanan.put("nama_pelanggan", tvNama.getText().toString());
         pesanan.put("no_hp", tvNoHp.getText().toString());
+        pesanan.put("belum_bayar", belum_bayar);
         if (tvAlamat != null) {
             String alamat = tvAlamat.getText().toString().trim();
             if (!alamat.isEmpty()) {

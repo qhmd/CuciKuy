@@ -36,13 +36,13 @@ public class AntrianAdapter extends RecyclerView.Adapter<AntrianAdapter.AntrianV
         Gson gson = new Gson();
         String json = gson.toJson(order);
         Log.i("dataadapter", json);
-        holder.noNota.setText(order.getNoNota());
-        holder.jenisDurasi.setText(order.getJenisDurasi());
-        holder.namaPengguna.setText(order.getNamaPengguna());
-        holder.tanggalMasuk.setText(order.getTanggalMasuk());
-        holder.estimasiSelesai.setText(order.getEstimasiSelesai());
-        holder.totalPembayaran.setText("Rp " + order.getTotalPembayaran());
-        holder.statusPembayaran.setText(order.isBelumBayar() ? "Belum Bayar" : "Sudah Bayar");
+        holder.noNota.setText(order.getNo_nota());
+        holder.jenisDurasi.setText(order.getJenis_durasi());
+        holder.namaPengguna.setText(order.getNama_pelanggan());
+        holder.tanggalMasuk.setText(order.getTanggal());
+        holder.estimasiSelesai.setText(order.getEst_selesai());
+        holder.totalPembayaran.setText("Rp " + order.getTotal_bayar());
+        holder.statusPembayaran.setText(order.isBelum_bayar() ? "Belum Bayar" : "Sudah Bayar");
     }
 
     @Override

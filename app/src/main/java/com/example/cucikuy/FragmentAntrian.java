@@ -65,10 +65,13 @@ public class FragmentAntrian extends Fragment {
                             OrderItem orderItem = document.toObject(OrderItem.class);
                             orderList.add(orderItem);
                             Gson gson = new Gson();
-                            String json = gson.toJson(orderItem);
+                            String json = gson.toJson(document.getData());
                             Log.i("fetchOrders", json);
 
-                            orderItem.printLog();
+                            String json1 = gson.toJson(orderItem);
+                            Log.i("fetchOrders", json1);
+
+//                            orderItem.printLog();
                             // Ambil data field dari nota
                             String namaPelanggan = document.getString("nama_pelanggan");
                             String noHp = document.getString("no_hp");
