@@ -29,29 +29,29 @@
         <!-- AKTIVITAS LAIN (tidak perlu intent-filter MAIN/LAUNCHER) -->
         <activity android:name=".IntroduceActivity" android:exported="true" />
         <activity android:name=".HomeActivity" android:exported="true" />
-        <activity android:name=".FragmentBeranda" android:exported="true" />
-        <activity android:name=".FragmentOrder" android:exported="true" />
-        <activity android:name=".FragmentReport" android:exported="true" />
-        <activity android:name=".FragmentSetting" android:exported="true" />
-        <activity android:name=".TambahOrderanActivity" android:exported="true" />
-        <activity android:name=".TambahKontakAktivitas" android:exported="true" />
-        <activity android:name=".DetailKontakActivity" android:exported="true" />
-        <activity android:name=".PengaturanAkunActivity"/>
-        <activity android:name=".PengaturanTokoActivity"/>
-        <activity android:name=".PengaturanDurasiActivity"/>
-        <activity android:name=".PengaturanLayananActivity"/>
-        <activity android:name=".PengaturanParfumActivity"/>
-        <activity android:name=".PengaturanDiskonActivity"/>
-        <activity android:name=".PengaturanPelangganActivity"/>
-        <activity android:name=".PengaturanNotaActivity"/>
-        <activity android:name=".TambahDurasi"/>
-        <activity android:name=".DurasiAdapater"/>
-        <activity android:name=".DurasiData"/>
-        <activity android:name=".DurasiItem"/>
-        <activity android:name=".TambahLayanan"/>
-        <activity android:name=".LayananPilihAdapter"/>
-        <activity android:name=".LayananOrderAdapter"/>
-        <activity android:name=".DetailOrderanActivity"/>
+        <activity android:name=".Beranda.FragmentBeranda" android:exported="true" />
+        <activity android:name=".Order.FragmentOrder" android:exported="true" />
+        <activity android:name=".Laporan.FragmentReport" android:exported="true" />
+        <activity android:name=".Pengaturan.FragmentSetting" android:exported="true" />
+        <activity android:name=".Order.TambahOrderanActivity" android:exported="true" />
+        <activity android:name=".Kontak.TambahKontakAktivitas" android:exported="true" />
+        <activity android:name=".Order.DetailKontakActivity" android:exported="true" />
+        <activity android:name=".Pengaturan.PengaturanAkunActivity"/>
+        <activity android:name=".Pengaturan.PengaturanTokoActivity"/>
+        <activity android:name=".Pengaturan.PengaturanDurasiActivity"/>
+        <activity android:name=".Pengaturan.PengaturanLayananActivity"/>
+        <activity android:name=".Pengaturan.PengaturanParfumActivity"/>
+        <activity android:name=".Pengaturan.PengaturanDiskonActivity"/>
+        <activity android:name=".Pengaturan.PengaturanPelangganActivity"/>
+        <activity android:name=".Pengaturan.PengaturanNotaActivity"/>
+        <activity android:name=".Durasi.TambahDurasi"/>
+        <activity android:name=".Durasi.DurasiAdapater"/>
+        <activity android:name=".Durasi.DurasiData"/>
+        <activity android:name=".Durasi.DurasiItem"/>
+        <activity android:name=".Layanan.TambahLayanan"/>
+        <activity android:name=".Layanan.LayananPilihAdapter"/>
+        <activity android:name=".Layanan.LayananOrderAdapter"/>
+        <activity android:name=".Order.DetailOrderanActivity"/>
 
 
         <!-- HAPUS bagian ini karena bukan activity -->

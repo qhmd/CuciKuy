@@ -5,21 +5,21 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.cucikuy.FragmentBeranda"
+        android:name="com.example.cucikuy.Beranda.FragmentBeranda"
         android:label="Beranda" />
 
     <fragment
         android:id="@+id/nav_order"
-        android:name="com.example.cucikuy.FragmentOrder"
+        android:name="com.example.cucikuy.Order.FragmentOrder"
         android:label="Pesanan" />
 
     <fragment
         android:id="@+id/nav_report"
-        android:name="com.example.cucikuy.FragmentReport"
+        android:name="com.example.cucikuy.Laporan.FragmentReport"
         android:label="Laporan" />
 
     <fragment
         android:id="@+id/nav_setting"
-        android:name="com.example.cucikuy.FragmentSetting"
+        android:name="com.example.cucikuy.Pengaturan.FragmentSetting"
         android:label="Pengaturan" />
 </navigation>

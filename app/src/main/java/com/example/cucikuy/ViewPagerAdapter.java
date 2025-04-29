@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.cucikuy.Order.FragmentAntrian;
+import com.example.cucikuy.Order.FragmentBelumBayar;
+import com.example.cucikuy.Order.FragmentOrder;
+import com.example.cucikuy.Order.FragmentSiapAmbil;
+
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
     public ViewPagerAdapter(FragmentOrder fa) {
