@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapter.ViewHolder> {
-
     private final List<LayananItem> layananList;
     private final double[] jumlahKgArray;
     private OnTotalChangeListener onTotalChangeListener;

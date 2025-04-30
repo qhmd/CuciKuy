@@ -158,7 +158,6 @@ public class DetailKontakActivity extends AppCompatActivity {
         });
         dialog.show();
     }
-
     public void sendDetailOrder () {
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -218,9 +217,9 @@ public class DetailKontakActivity extends AppCompatActivity {
                         Map<String, Object> layananData = new HashMap<>();
                         layananData.put("nama", item.getNama());
                         layananData.put("durasi", item.getDurasi());
-                        layananData.put("harga_per_kg", Double.parseDouble(item.getHarga()));
+                        layananData.put("harga_per_kg", (item.getHarga()));
                         layananData.put("jumlah_kg", item.getJumlahKg());
-                        layananData.put("total_harga", Double.parseDouble(item.getHarga()) * item.getJumlahKg());
+                        layananData.put("total_harga", (item.getTotalHarga()) * item.getJumlahKg());
                         layananRef.add(layananData)
                                 .addOnSuccessListener(docRef -> {
                                     Log.d("Firestore", "Layanan berhasil ditambahkan");

@@ -1,6 +1,11 @@
 package com.example.cucikuy.Order;
 
-public class OrderItem {
+import com.example.cucikuy.Layanan.LayananItem;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class OrderItem implements Serializable {
     private String nama_pelanggan;
     private String no_hp;
     private String est_selesai;
@@ -77,4 +82,15 @@ public class OrderItem {
     public String getJenis_durasi () {
         return jenis_durasi;
     }
+    private ArrayList<LayananItem> selectedLayanan;
+
+    public  ArrayList<LayananItem> getSelectedLayanan() {
+        return selectedLayanan;
+    }
+
+    public void setSelectedLayanan(ArrayList<LayananItem> selectedLayanan) {
+        this.selectedLayanan = selectedLayanan;
+    }
+
+
 }
