@@ -108,7 +108,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                                         String catatan = documentSnapshot.getString("catatan");
                                         String metodePembayaran = documentSnapshot.getString("metodePembayaran");
                                         String alamatAntar = documentSnapshot.getString("alamatAntar");
-
                                         // Kirim ke DetailOrderanActivity
                                         Intent intent = new Intent(context, DetailOrderanActivity.class);
                                         intent.putExtra("selectedLayanan", selectedLayananList);
