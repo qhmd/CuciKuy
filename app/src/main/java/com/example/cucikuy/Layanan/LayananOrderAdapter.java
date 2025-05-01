@@ -44,7 +44,7 @@ public class LayananOrderAdapter extends RecyclerView.Adapter<LayananOrderAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
         holder.tvNama.setText(item.getNama());
-        holder.tvHarga.setText("Rp " + item.getHargaPerKg());
+        holder.tvHarga.setText("Rp " + item.getHarga());
         holder.tvDurasi.setText(item.getDurasi() + " hari");
         holder.tvJumlahKg.setText(item.getJumlahKg() + " Kg");
         holder.imgIcon.setImageResource(item.getIconLaundry());

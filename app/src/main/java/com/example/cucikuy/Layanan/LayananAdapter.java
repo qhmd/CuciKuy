@@ -42,7 +42,7 @@ public class LayananAdapter extends RecyclerView.Adapter<LayananAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
         holder.tvNama.setText(item.getNama());
-        holder.tvHarga.setText("Rp " + item.getTotalHarga());
+        holder.tvHarga.setText("Rp " + item.getHarga());
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
         // Kalau kamu mau set gambar dinamis, bisa di sini juga

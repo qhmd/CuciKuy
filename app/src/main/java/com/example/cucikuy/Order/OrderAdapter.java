@@ -67,7 +67,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             Log.i("ketekan", "Item diklik");
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String noNota = order.getNo_nota();
-
             // Ambil layanan seperti biasa
             db.collection("users")
                     .document(userId)

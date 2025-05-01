@@ -9,7 +9,10 @@ public class OrderItem implements Serializable {
     private String nama_pelanggan;
     private String no_hp;
     private String est_selesai;
+<<<<<<< HEAD
 
+=======
+>>>>>>> f217dbe5b2f195ec3ecf70a76f69dad6e35f2a06
     private String no_nota;
     private boolean belum_bayar;
     private String tanggal;
