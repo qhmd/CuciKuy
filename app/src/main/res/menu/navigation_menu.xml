@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/outline_home_24"
+        android:title="@string/beranda_nav" />
+    <item
+        android:id="@+id/nav_order"
+        android:icon="@drawable/outline_description_24"
+        android:title="@string/order_nav" />
+    <item
+        android:id="@+id/nav_report"
+        android:icon="@drawable/outline_data_exploration_24"
+        android:title="Laporan" />
+    <item
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/outline_settings_24"
+        android:title="Pengaturan" />
+</menu>

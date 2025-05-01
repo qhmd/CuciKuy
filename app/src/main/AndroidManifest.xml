@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CuciKuy"
+        tools:targetApi="31">
+
+        <!-- LAUNCHER PERTAMA SAAT APLIKASI DIBUKA -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- AKTIVITAS LAIN (tidak perlu intent-filter MAIN/LAUNCHER) -->
+        <activity android:name=".IntroduceActivity" android:exported="true" />
+        <activity android:name=".HomeActivity" android:exported="true" />
+        <activity android:name=".Beranda.FragmentBeranda" android:exported="true" />
+        <activity android:name=".Order.FragmentOrder" android:exported="true" />
+        <activity android:name=".Laporan.FragmentReport" android:exported="true" />
+        <activity android:name=".Pengaturan.FragmentSetting" android:exported="true" />
+        <activity android:name=".Order.TambahOrderanActivity" android:exported="true" />
+        <activity android:name=".Kontak.TambahKontakAktivitas" android:exported="true" />
+        <activity android:name=".Order.DetailKontakActivity" android:exported="true" />
+        <activity android:name=".Pengaturan.PengaturanAkunActivity"/>
+        <activity android:name=".Pengaturan.PengaturanTokoActivity"/>
+        <activity android:name=".Pengaturan.PengaturanDurasiActivity"/>
+        <activity android:name=".Pengaturan.PengaturanLayananActivity"/>
+        <activity android:name=".Pengaturan.PengaturanParfumActivity"/>
+        <activity android:name=".Pengaturan.PengaturanDiskonActivity"/>
+        <activity android:name=".Pengaturan.PengaturanPelangganActivity"/>
+        <activity android:name=".Pengaturan.PengaturanNotaActivity"/>
+        <activity android:name=".Durasi.TambahDurasi"/>
+        <activity android:name=".Durasi.DurasiAdapater"/>
+        <activity android:name=".Durasi.DurasiData"/>
+        <activity android:name=".Durasi.DurasiItem"/>
+        <activity android:name=".Layanan.TambahLayanan"/>
+        <activity android:name=".Layanan.LayananPilihAdapter"/>
+        <activity android:name=".Layanan.LayananOrderAdapter"/>
+        <activity android:name=".Order.DetailOrderanActivity"/>
+
+
+        <!-- HAPUS bagian ini karena bukan activity -->
+        <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->
+        <!-- <activity android:name=".KontakItem" android:exported="true" /> -->
+
+    </application>
+</manifest>
