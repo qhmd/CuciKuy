@@ -5,14 +5,16 @@ import com.google.firebase.database.PropertyName;
 import java.io.Serializable;
 
 public class LayananItem implements Serializable {
-    private String nama;
     private String harga;
-    private String durasi;
     private String hargaPerKg;
     private int iconLaundry;
-    private double jumlahKg;
-    private double totalHarga;
     private double totalHargaLayanan;
+
+private String durasi;
+private double jumlahKg;
+private String nama;
+
+
     public LayananItem() {
         // Diperlukan untuk Firebase (default constructor)
     }

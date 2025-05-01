@@ -48,7 +48,7 @@ public class LayananOrderAdapter extends RecyclerView.Adapter<LayananOrderAdapte
         holder.tvDurasi.setText(item.getDurasi() + " hari");
         holder.tvJumlahKg.setText(item.getJumlahKg() + " Kg");
         holder.imgIcon.setImageResource(item.getIconLaundry());
-        holder.tvHargaLayanan.setText("Rp " + item.getTotalHarga());
+        holder.tvHargaLayanan.setText("Rp " + item.getHargaPerKg());
     }
     @Override
     public int getItemCount() {
