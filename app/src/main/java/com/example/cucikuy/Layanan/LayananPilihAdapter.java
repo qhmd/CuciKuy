@@ -81,7 +81,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
             holder.tvJumlahKg.removeTextChangedListener((TextWatcher) holder.tvJumlahKg.getTag());
         }
 
-        // Menambahkan TextWatcher untuk e  dit jumlahKg
+        // Menambahkan TextWatcher untuk edit jumlahKg
         TextWatcher watcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -125,7 +125,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         int total = 0;
         for (int i = 0; i < layananList.size(); i++) {
             try {
-                double harga = (layananList.get(i).getTotalHarga());
+                int harga = Integer.parseInt(layananList.get(i).getHarga());
                 total += (int) (harga * jumlahKgArray[i]);
             } catch (NumberFormatException ignored) {}
         }
@@ -147,7 +147,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
 
                 // Hitung dan set total harga
                 try {
-                    double hargaPerKg = Double.parseDouble(item.getHargaPerKg());
+                    double hargaPerKg = Double.parseDouble(item.getHarga());
                     double totalHarga = hargaPerKg * jumlahKg;
                     item.setTotalHarga(totalHarga); // Pastikan LayananItem punya method ini
                 } catch (NumberFormatException e) {
@@ -180,7 +180,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         }
 
         double jumlahKg = jumlahKgArray[position];
-        double hargaPerKg = Double.parseDouble(layananList.get(position).getHargaPerKg()); // Harga per kg
+        double hargaPerKg = Double.parseDouble(layananList.get(position).getHarga()); // Harga per kg
         return jumlahKg * hargaPerKg; // Mengembalikan total harga per layanan
     }
 
