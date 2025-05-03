@@ -79,16 +79,48 @@ public class FragmentAntrian extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
-                            OrderItem orderItem = document.toObject(OrderItem.class);
-                            Gson gson = new Gson();
-                            String json = gson.toJson(orderItem);
-                            Log.i("fetchOrders",  json);
-                            orderList.add(orderItem);
+                            try {
+                                OrderItem orderItem = new OrderItem();
+
+                                orderItem.setNama_pelanggan(document.getString("nama_pelanggan"));
+                                orderItem.setNo_hp(document.getString("no_hp"));
+                                orderItem.setEst_selesai(document.getString("est_selesai"));
+                                orderItem.setNo_nota(document.getString("no_nota"));
+                                orderItem.setBelum_bayar(Boolean.TRUE.equals(document.getBoolean("belum_bayar")));
+                                orderItem.setTanggal(document.getString("tanggal"));
+                                orderItem.setJenis_durasi(document.getString("jenis_durasi"));
+
+                                // Handle total_bayar secara aman
+                                Object total = document.get("total_bayar");
+                                double totalBayar = 0.0;
+                                if (total instanceof Number) {
+                                    totalBayar = ((Number) total).doubleValue();
+                                } else if (total instanceof String) {
+                                    try {
+                                        totalBayar = Double.parseDouble((String) total);
+                                    } catch (NumberFormatException e) {
+                                        Log.w("fetchOrders", "Format total_bayar salah di dokumen: " + document.getId());
+                                    }
+                                }
+                                orderItem.setTotal_bayar(totalBayar);
+
+                                // Tambahkan ke list jika semua aman
+                                Gson gson = new Gson();
+                                String json = gson.toJson(orderItem);
+                                Log.i("fetchOrders", json);
+                                orderList.add(orderItem);
+                            } catch (Exception e) {
+                                Log.e("fetchOrders", "Gagal parsing dokumen: " + document.getId(), e);
+                            }
+
 
                             document.getReference().collection("layanan").get().addOnSuccessListener(layananSnapshots -> {
                                 ArrayList<LayananItem> layananItems = new ArrayList<>();
                                 for (DocumentSnapshot layananDoc : layananSnapshots) {
                                     LayananItem layananItem = layananDoc.toObject(LayananItem.class);
+                                    Gson gson1 = new Gson();
+                                    String ini = gson1.toJson(layananItem);
+                                            Log.i("iniyaa", ini);
                                     layananItems.add(layananItem);
                                 }
                                 layananListPerOrder.add(layananItems);

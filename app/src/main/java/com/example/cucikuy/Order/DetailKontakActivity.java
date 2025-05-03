@@ -86,12 +86,13 @@ public class DetailKontakActivity extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshot -> {
                     layananList = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : querySnapshot) {
+                        Log.d("Firestore", "Isi dokumen: " + doc.getData());
                         String namaLayanan = doc.getId();
-                        String harga = doc.getString("harga");
+                        Double harga_per_kg = doc.getDouble("harga");
                         String durasiLayanan = doc.getString("durasi");
                         layananList.add(new LayananItem(
                                 namaLayanan,
-                                harga,
+                                harga_per_kg,
                                 durasiLayanan,
                                 R.drawable.baseline_dry_cleaning_24
                         ));
@@ -139,10 +140,10 @@ public class DetailKontakActivity extends AppCompatActivity {
                         for (LayananItem item : selectedLayanan) {
                             Log.i("apadipilih",
                                     "Nama: " + item.getNama() +
-                                            ", Harga: " + item.getHarga() +
+                                            ", Harga: " + item.getJumlah_kg() +
                                             ", Durasi: " + item.getDurasi() +
-                                            ", Total Harga: " + item.getTotalHarga() +
-                                            ", JumlahKg: " + item.getJumlahKg());
+                                            ", Total Harga: " + item.getTotal_harga() +
+                                            ", JumlahKg: " + item.getJumlah_kg());
                         }
                         Log.i("apadipilih", totalHarga);
                         sendDetailOrder();
@@ -217,9 +218,9 @@ public class DetailKontakActivity extends AppCompatActivity {
                         Map<String, Object> layananData = new HashMap<>();
                         layananData.put("nama", item.getNama());
                         layananData.put("durasi", item.getDurasi());
-                        layananData.put("harga_per_kg", (item.getHarga()));
-                        layananData.put("jumlah_kg", item.getJumlahKg());
-                        layananData.put("total_harga", (item.getTotalHarga()) * item.getJumlahKg());
+                        layananData.put("harga_per_kg", (item.getJumlah_kg()));
+                        layananData.put("jumlah_kg", item.getJumlah_kg());
+                        layananData.put("total_harga", (item.getTotal_harga()) * item.getJumlah_kg());
                         layananRef.add(layananData)
                                 .addOnSuccessListener(docRef -> {
                                     Log.d("Firestore", "Layanan berhasil ditambahkan");

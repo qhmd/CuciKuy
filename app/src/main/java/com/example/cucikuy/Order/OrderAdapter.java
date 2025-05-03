@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cucikuy.Layanan.LayananItem;
 import com.example.cucikuy.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,6 +28,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     private Context context;
     private ArrayList<OrderItem> orderList;
+    private ArrayList<LayananItem> layananList;
     private OnItemClickListener listener;
     private FirebaseFirestore db;
 
@@ -60,14 +62,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.namaPengguna.setText(order.getNama_pelanggan());
         holder.tanggalMasuk.setText("Masuk : " + order.getTanggal());
         holder.estimasiSelesai.setText("Est Sel : " + order.getEst_selesai());
-        holder.totalPembayaran.setText(order.getTotal_bayar());
         holder.statusPembayaran.setText(order.isBelum_bayar() ? "Belum Bayar" : "Sudah Bayar");
 
         holder.itemView.setOnClickListener(v -> {
             Log.i("ketekan", "Item diklik");
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String noNota = order.getNo_nota();
-            // Ambil layanan seperti biasa
+
+            // Ambil data layanan dulu
             db.collection("users")
                     .document(userId)
                     .collection("pesanan")
@@ -77,16 +79,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                     .collection("layanan")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
-                        ArrayList<LayananItem> selectedLayananList = new ArrayList<>();
+                        ArrayList<LayananItem> layananSelected = new ArrayList<>();
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             LayananItem layanan = doc.toObject(LayananItem.class);
-                            Log.d("FirestoreData", "Layanan: " + doc.getData().toString());
-                            selectedLayananList.add(layanan);
-                            Gson gsonbro = new Gson();
-                            String inidia = gsonbro.toJson(layanan);
-                            Log.i("browtf", inidia);
+                            Gson gson3 = new Gson();
+
+                            String tes = gson3.toJson(layanan);
+                            Log.i("cobainijuga", tes);
+                            Log.i("cek_doc", doc.getData().toString());
+                            layananSelected.add(layanan);
+                            Log.i("cek_layanan", new Gson().toJson(layanan));
                         }
-                        // Setelah ambil layanan, ambil data dari dokumen antrian
+
+                        // Setelah itu, ambil data OrderItem dari dokumen antrian
                         db.collection("users")
                                 .document(userId)
                                 .collection("pesanan")
@@ -94,43 +99,27 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                                 .collection("antrian")
                                 .document(noNota)
                                 .get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if (documentSnapshot.exists()) {
-                                        // Menampilkan semua isi dokumen
-                                        Map<String, Object> data = documentSnapshot.getData();
-                                        if (data != null) {
-                                            for (Map.Entry<String, Object> entry : data.entrySet()) {
-                                                Log.i("antrianFullData", entry.getKey() + ": " + entry.getValue());
-                                            }
-                                        }
-                                        // Kalau masih tetap mau ambil sebagian data seperti sebelumnya
-                                        String catatan = documentSnapshot.getString("catatan");
-                                        String metodePembayaran = documentSnapshot.getString("metodePembayaran");
-                                        String alamatAntar = documentSnapshot.getString("alamatAntar");
-                                        // Kirim ke DetailOrderanActivity
+                                .addOnSuccessListener(docSnapshot -> {
+                                    if (docSnapshot.exists()) {
+//                                        OrderItem orderDetail = docSnapshot.toObject(OrderItem.class);
                                         Intent intent = new Intent(context, DetailOrderanActivity.class);
-                                        intent.putExtra("selectedLayanan", selectedLayananList);
-                                        intent.putExtra("catatan", catatan);
-                                        intent.putExtra("metodePembayaran", metodePembayaran);
-                                        intent.putExtra("alamatAntar", alamatAntar);
-
-                                        Gson gson5 = new Gson();
-                                        String lihatisi = gson5.toJson(selectedLayananList);
-                                        Log.i("liatnoss", lihatisi);
-
+                                        Gson gson2 = new Gson();
+//                                        Log.i("iniuntukdetail", gson2.toJson(orderDetail));
+//                                        intent.putExtra("order", gson2.toJson(orderDetail));
+//                                        intent.putExtra("layananList", gson2.toJson(layananSelected));
                                         context.startActivity(intent);
-                                    } else {
-                                        Log.w("antrianFullData", "Dokumen tidak ditemukan");
                                     }
                                 })
                                 .addOnFailureListener(e -> {
                                     Log.e("Firebase", "Gagal mengambil data antrian", e);
                                 });
+
                     })
                     .addOnFailureListener(e -> {
                         Log.e("Firebase", "Gagal mengambil data layanan", e);
                     });
         });
+
     }
 
     @Override

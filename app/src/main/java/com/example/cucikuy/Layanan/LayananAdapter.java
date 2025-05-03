@@ -1,5 +1,6 @@
 package com.example.cucikuy.Layanan;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,9 @@ public class LayananAdapter extends RecyclerView.Adapter<LayananAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
+//        Log.i("tessbro", String.valueOf(item.getHarga_per_kg()));
         holder.tvNama.setText(item.getNama());
-        holder.tvHarga.setText("Rp " + item.getHarga());
+        holder.tvHarga.setText("Rp " + item.getHarga_per_kg());
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
         // Kalau kamu mau set gambar dinamis, bisa di sini juga

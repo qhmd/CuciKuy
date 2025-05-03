@@ -5,26 +5,26 @@ import com.google.firebase.database.PropertyName;
 import java.io.Serializable;
 
 public class LayananItem implements Serializable {
-    private String harga;
-    private String hargaPerKg;
-    private int iconLaundry;
-    private double totalHargaLayanan;
+    private String nama;
+    private String durasi;
+    private double harga_per_kg;
+    private double jumlah_kg;
+    private double total_harga;
 
-private String durasi;
-private double jumlahKg;
-private String nama;
-
+    private int iconLaundry; // ini tidak dari Firestore
 
     public LayananItem() {
-        // Diperlukan untuk Firebase (default constructor)
+        // Diperlukan untuk Firebase
     }
 
-    public LayananItem(String nama, String harga, String durasi, int iconLaundry) {
+    public LayananItem(String nama, double harga_per_kg, String durasi, int iconLaundry) {
         this.nama = nama;
-        this.harga = harga;
+        this.harga_per_kg = harga_per_kg;
         this.durasi = durasi;
         this.iconLaundry = iconLaundry;
     }
+
+    // Getter & Setter wajib sesuai nama field
 
     public String getNama() {
         return nama;
@@ -34,61 +34,57 @@ private String nama;
         this.nama = nama;
     }
 
-    public String getHarga() {
-        return harga;
-    }
-
-    public void setHarga(String harga) {
-        this.harga = harga;
+    public String getDurasi() {
+        return durasi;
     }
 
     public void setDurasi(String durasi) {
         this.durasi = durasi;
     }
-    public String getDurasi() {
-        return durasi;
+    @PropertyName("harga_per_kg")
+    public double getHarga_per_kg() {
+        return harga_per_kg;
+    }
+    @PropertyName("harga_per_kg")
+    public void setHarga_per_kg(Object harga_per_kg) {
+        try {
+            if (harga_per_kg == null) {
+                this.harga_per_kg = 0.0;  // Default
+            } else if (harga_per_kg instanceof Double) {
+                this.harga_per_kg = (Double) harga_per_kg;
+            } else if (harga_per_kg instanceof String) {
+                this.harga_per_kg = Double.parseDouble((String) harga_per_kg); // Mengonversi String ke Double
+            } else {
+                this.harga_per_kg = 0.0;  // Default jika tipe tidak sesuai
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.harga_per_kg = 0.0;  // Default
+        }
     }
 
-    public void  setIconLaundry(int iconLaundry) {
+    public double getJumlah_kg() {
+        return jumlah_kg;
+    }
+
+    public void setJumlah_kg(double jumlah_kg) {
+        this.jumlah_kg = jumlah_kg;
+    }
+
+    public double getTotal_harga() {
+        return total_harga;
+    }
+
+    public void setTotal_harga(double total_harga) {
+        this.total_harga = total_harga;
+    }
+
+    // Yang tidak ada di Firestore
+    public int getIconLaundry() {
+        return iconLaundry;
+    }
+
+    public void setIconLaundry(int iconLaundry) {
         this.iconLaundry = iconLaundry;
-    }
-
-    public int getIconLaundry () {
-        return  iconLaundry;
-    }
-
-    @PropertyName("jumlah_kg")
-    public double getJumlahKg() {
-        return jumlahKg;
-    }
-    @PropertyName("jumlah_kg")
-    public void setJumlahKg(double jumlahKg) {
-        this.jumlahKg = jumlahKg;
-    }
-    @PropertyName("total_harga")
-    public void setTotalHarga(double totalHargaLayanan) {
-        this.totalHargaLayanan = totalHargaLayanan;
-    }
-    @PropertyName("total_harga")
-    public double getTotalHarga() {
-        return totalHargaLayanan;
-    }
-    @PropertyName("harga_per_kg")
-    public String getHargaPerKg() {
-        return hargaPerKg;
-    }
-
-    @PropertyName("harga_per_kg")
-    public void setHargaPerKg(String hargaPerKg) {
-        this.hargaPerKg = hargaPerKg;
-    }
-
-    // totalHargaLayanan (tidak ada di Firestore → default)
-    public double getTotalHargaLayanan() {
-        return totalHargaLayanan;
-    }
-
-    public void setTotalHargaLayanan(double totalHargaLayanan) {
-        this.totalHargaLayanan = totalHargaLayanan;
     }
 }

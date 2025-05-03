@@ -130,7 +130,7 @@ public class PengaturanLayananActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         // Ambil nama layanan dan harga dari setiap document
                         String namaLayanan = doc.getString("nama_layanan");
-                        String harga = doc.getString("harga");
+                        Double harga = doc.getDouble("harga");
                         String durasi = doc.getString("durasi");
                         // Tambahkan layanan ke list
                         layananList.add(new LayananItem(namaLayanan, harga, durasi, R.drawable.baseline_dry_cleaning_24 ));

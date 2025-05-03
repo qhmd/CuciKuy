@@ -73,7 +73,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         // Menampilkan data layanan
         holder.tvNama.setText(item.getNama());
         holder.tvDurasi.setText(item.getDurasi());
-        holder.tvHarga.setText("Rp " + item.getHarga());
+        holder.tvHarga.setText("Rp " + item.getHarga_per_kg());
         holder.imgIcon.setImageResource(item.getIconLaundry());
 
         // Jika ada TextWatcher yang sebelumnya ditambahkan, hapus terlebih dahulu
@@ -125,7 +125,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         int total = 0;
         for (int i = 0; i < layananList.size(); i++) {
             try {
-                int harga = Integer.parseInt(layananList.get(i).getHarga());
+                double harga = (layananList.get(i).getHarga_per_kg());
                 total += (int) (harga * jumlahKgArray[i]);
             } catch (NumberFormatException ignored) {}
         }
@@ -143,15 +143,15 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
             if (jumlahKgArray[i] > 0) {
                 LayananItem item = layananList.get(i);
                 double jumlahKg = jumlahKgArray[i];
-                item.setJumlahKg(jumlahKg);
+                item.setJumlah_kg(jumlahKg);
 
                 // Hitung dan set total harga
                 try {
-                    double hargaPerKg = Double.parseDouble(item.getHarga());
+                    double hargaPerKg = (item.getHarga_per_kg());
                     double totalHarga = hargaPerKg * jumlahKg;
-                    item.setTotalHarga(totalHarga); // Pastikan LayananItem punya method ini
+                    item.setTotal_harga(totalHarga); // Pastikan LayananItem punya method ini
                 } catch (NumberFormatException e) {
-                    item.setTotalHarga(0); // Fallback
+                    item.setTotal_harga(0); // Fallback
                 }
 
                 selected.add(item);
@@ -180,7 +180,7 @@ public class LayananPilihAdapter extends RecyclerView.Adapter<LayananPilihAdapte
         }
 
         double jumlahKg = jumlahKgArray[position];
-        double hargaPerKg = Double.parseDouble(layananList.get(position).getHarga()); // Harga per kg
+        double hargaPerKg = (layananList.get(position).getHarga_per_kg()); // Harga per kg
         return jumlahKg * hargaPerKg; // Mengembalikan total harga per layanan
     }
 

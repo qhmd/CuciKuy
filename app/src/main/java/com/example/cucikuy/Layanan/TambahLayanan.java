@@ -66,7 +66,7 @@ public class TambahLayanan extends AppCompatActivity {
                 btn_add_layanan.setEnabled(false);
                 String nama = nama_layanan.getText().toString().trim();
                 String durasi = durasi_layanan.getText().toString().trim();
-                String harga = harga_layanan.getText().toString().trim();
+                Double harga = Double.parseDouble(harga_layanan.getText().toString());
 
                 Map<String, Object> layanan = new HashMap<>();
                 layanan.put("nama_layanan", nama);

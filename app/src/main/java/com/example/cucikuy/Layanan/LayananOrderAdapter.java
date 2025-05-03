@@ -44,11 +44,11 @@ public class LayananOrderAdapter extends RecyclerView.Adapter<LayananOrderAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
         holder.tvNama.setText(item.getNama());
-        holder.tvHarga.setText("Rp " + item.getHarga());
+        holder.tvHarga.setText("Rp " + item.getHarga_per_kg());
         holder.tvDurasi.setText(item.getDurasi() + " hari");
-        holder.tvJumlahKg.setText(item.getJumlahKg() + " Kg");
+        holder.tvJumlahKg.setText(item.getJumlah_kg() + " Kg");
         holder.imgIcon.setImageResource(item.getIconLaundry());
-        holder.tvHargaLayanan.setText("Rp " + item.getHargaPerKg());
+        holder.tvHargaLayanan.setText("Rp " + item.getTotal_harga());
     }
     @Override
     public int getItemCount() {

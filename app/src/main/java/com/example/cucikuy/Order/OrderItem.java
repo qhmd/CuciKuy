@@ -12,7 +12,7 @@ public class OrderItem implements Serializable {
     private String no_nota;
     private boolean belum_bayar;
     private String tanggal;
-    private String total_bayar;
+    private double total_bayar;
     private String jenis_durasi;
 
     public OrderItem() {
@@ -67,11 +67,11 @@ public class OrderItem implements Serializable {
         this.tanggal = tanggal;
     }
 
-    public String getTotal_bayar() {
+    public double getTotal_bayar() {
         return total_bayar;
     }
 
-    public void setTotal_bayar(String total_pembayaran) {
+    public void setTotal_bayar(double total_pembayaran) {
         this.total_bayar = total_pembayaran;
     }
 
@@ -91,6 +91,4 @@ public class OrderItem implements Serializable {
     public void setSelectedLayanan(ArrayList<LayananItem> selectedLayanan) {
         this.selectedLayanan = selectedLayanan;
     }
-
-
 }
