@@ -223,7 +223,7 @@ public class DetailKontakActivity extends AppCompatActivity {
                         Map<String, Object> layananData = new HashMap<>();
                         layananData.put("nama", item.getNama());
                         layananData.put("durasi", item.getDurasi());
-                        layananData.put("harga_per_kg", (item.getJumlah_kg()));
+                        layananData.put("harga_per_kg", (item.getHarga_per_kg()));
                         layananData.put("jumlah_kg", item.getJumlah_kg());
                         layananData.put("total_harga", (item.getTotal_harga()) * item.getJumlah_kg());
                         layananRef.add(layananData)

@@ -102,10 +102,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                                 .get()
                                 .addOnSuccessListener(docSnapshot -> {
                                     if (docSnapshot.exists()) {
-//                                        OrderItem orderDetail = docSnapshot.toObject(OrderItem.class);
+                                        OrderItem orderDetail = docSnapshot.toObject(OrderItem.class);
                                         Intent intent = new Intent(context, DetailOrderanActivity.class);
-                                        Gson gson2 = new Gson();
-//                                        Log.i("iniuntukdetail", gson2.toJson(orderDetail));
+                                        Log.i("iniuntukdetail", new Gson().toJson(orderDetail));
 //                                        intent.putExtra("order", gson2.toJson(orderDetail));
 //                                        intent.putExtra("layananList", gson2.toJson(layananSelected));
                                         context.startActivity(intent);
