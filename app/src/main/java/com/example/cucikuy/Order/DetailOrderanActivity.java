@@ -24,7 +24,7 @@
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_detail_orderan);
             String nama = getIntent().getStringExtra("nama");
-            String totalHarga = getIntent().getStringExtra("totalHarga");
+            Double totalHarga = getIntent().getDoubleExtra("totalHarga", 0.0);
             String noHp = getIntent().getStringExtra("noHp");
             String tanggalMasuk = getIntent().getStringExtra("tanggalMasuk");
             String estimasiSelesai = getIntent().getStringExtra("estiminasiSelesai");
@@ -37,7 +37,7 @@
 
 
             tvNama.setText(nama);
-            tvTotalHarga.setText(totalHarga);
+            tvTotalHarga.setText("Rp " + String.valueOf(totalHarga));
             tvNoHp.setText(noHp);
             tvTanggalMsuk.setText(tanggalMasuk);
             tvEstSelesai.setText(estimasiSelesai);

@@ -60,6 +60,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.noNota.setText(order.getNo_nota());
         holder.jenisDurasi.setText(order.getJenis_durasi());
         holder.namaPengguna.setText(order.getNama_pelanggan());
+        holder.totalPembayaran.setText(String.valueOf(order.getTotal_bayar()));
         holder.tanggalMasuk.setText("Masuk : " + order.getTanggal());
         holder.estimasiSelesai.setText("Est Sel : " + order.getEst_selesai());
         holder.statusPembayaran.setText(order.isBelum_bayar() ? "Belum Bayar" : "Sudah Bayar");

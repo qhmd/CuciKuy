@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,7 +49,7 @@ public class DetailKontakActivity extends AppCompatActivity {
     private List<LayananItem> layananList;
     private Boolean belum_bayar;
     private LayananPilihAdapter adapter; // [✔️ Tambahan agar adapter bisa diakses di luar callback Firestore]
-    private String totalHarga = ""; // [✔️ Tambahan untuk menyimpan total harga secara global]
+    private double totalHarga = 0.0;// [✔️ Tambahan untuk menyimpan total harga secara global]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +103,14 @@ public class DetailKontakActivity extends AppCompatActivity {
                     adapter = new LayananPilihAdapter(layananList);
 
                     // [✔️ Set listener untuk update total harga]
-                    adapter.setOnTotalChangeListener(totalFormatted -> {
-                        tvTotalHarga.setText("Total: " + totalFormatted);
-                        totalHarga = totalFormatted; // [✔️ Simpan total harga di variabel global untuk dikirim]
+                    adapter.setOnTotalChangeListener(total -> {
+                        NumberFormat rupiahFormat = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
+                        String formattedTotal = rupiahFormat.format(total);
+                        Log.i("totalharga", formattedTotal);
+                        tvTotalHarga.setText("Total: " + formattedTotal);
+                        totalHarga = total; // simpan sebagai double
                     });
+
                     rvLayanan.setAdapter(adapter);
                 })
                 .addOnFailureListener(e -> {
@@ -145,7 +150,7 @@ public class DetailKontakActivity extends AppCompatActivity {
                                             ", Total Harga: " + item.getTotal_harga() +
                                             ", JumlahKg: " + item.getJumlah_kg());
                         }
-                        Log.i("apadipilih", totalHarga);
+                        Log.i("apadipilih", String.valueOf(totalHarga));
                         sendDetailOrder();
                         startActivity(intent);
                         finish();

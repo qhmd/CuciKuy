@@ -93,6 +93,9 @@ public class FragmentAntrian extends Fragment {
                                 // Handle total_bayar secara aman
                                 Object total = document.get("total_bayar");
                                 double totalBayar = 0.0;
+                                Log.w("fetchOrders", String.valueOf(total));
+
+//                                Log.w("fetchOrders", (String) total);
                                 if (total instanceof Number) {
                                     totalBayar = ((Number) total).doubleValue();
                                 } else if (total instanceof String) {
