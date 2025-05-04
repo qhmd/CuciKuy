@@ -225,7 +225,8 @@ public class DetailKontakActivity extends AppCompatActivity {
                         layananData.put("durasi", item.getDurasi());
                         layananData.put("harga_per_kg", (item.getHarga_per_kg()));
                         layananData.put("jumlah_kg", item.getJumlah_kg());
-                        layananData.put("total_harga", (item.getTotal_harga()) * item.getJumlah_kg());
+                        layananData.put("total_harga", (item.getHarga_per_kg()) * item.getJumlah_kg());
+                        Log.d("Firestore", item.getTotal_harga()+ "\n"+ item.getJumlah_kg());
                         layananRef.add(layananData)
                                 .addOnSuccessListener(docRef -> {
                                     Log.d("Firestore", "Layanan berhasil ditambahkan");

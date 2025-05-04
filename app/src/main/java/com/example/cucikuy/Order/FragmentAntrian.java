@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cucikuy.FormatIDR;
 import com.example.cucikuy.Layanan.LayananItem;
 import com.example.cucikuy.R;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -105,6 +106,7 @@ public class FragmentAntrian extends Fragment {
                                         Log.w("fetchOrders", "Format total_bayar salah di dokumen: " + document.getId());
                                     }
                                 }
+
                                 orderItem.setTotal_bayar(totalBayar);
 
                                 // Tambahkan ke list jika semua aman

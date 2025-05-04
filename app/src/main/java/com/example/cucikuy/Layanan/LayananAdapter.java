@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cucikuy.FormatIDR;
 import com.example.cucikuy.R;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class LayananAdapter extends RecyclerView.Adapter<LayananAdapter.ViewHold
         LayananItem item = layananList.get(position);
 //        Log.i("tessbro", String.valueOf(item.getHarga_per_kg()));
         holder.tvNama.setText(item.getNama());
-        holder.tvHarga.setText("Rp " + item.getHarga_per_kg());
+        holder.tvHarga.setText("Rp " + FormatIDR.FormatIDR(item.getHarga_per_kg()));
         holder.tvDurasi.setText(item.getDurasi());
         holder.imgIcon.setImageResource(item.getIconLaundry());
         // Kalau kamu mau set gambar dinamis, bisa di sini juga

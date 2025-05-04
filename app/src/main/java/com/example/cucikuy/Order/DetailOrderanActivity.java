@@ -10,6 +10,7 @@
     import androidx.recyclerview.widget.LinearLayoutManager;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import com.example.cucikuy.FormatIDR;
     import com.example.cucikuy.HomeActivity;
     import com.example.cucikuy.Layanan.LayananItem;
     import com.example.cucikuy.Layanan.LayananOrderAdapter;
@@ -17,6 +18,7 @@
     import com.google.gson.Gson;
 
     import java.util.ArrayList;
+    import java.util.Formatter;
 
     public class DetailOrderanActivity extends AppCompatActivity {
         @Override
@@ -37,7 +39,7 @@
 
 
             tvNama.setText(nama);
-            tvTotalHarga.setText("Rp " + String.valueOf(totalHarga));
+            tvTotalHarga.setText("Rp " +FormatIDR.FormatIDR(totalHarga));
             tvNoHp.setText(noHp);
             tvTanggalMsuk.setText(tanggalMasuk);
             tvEstSelesai.setText(estimasiSelesai);

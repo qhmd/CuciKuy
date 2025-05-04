@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cucikuy.FormatIDR;
 import com.example.cucikuy.Layanan.LayananItem;
 import com.example.cucikuy.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,7 +61,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.noNota.setText(order.getNo_nota());
         holder.jenisDurasi.setText(order.getJenis_durasi());
         holder.namaPengguna.setText(order.getNama_pelanggan());
-        holder.totalPembayaran.setText(String.valueOf(order.getTotal_bayar()));
+        holder.totalPembayaran.setText("Rp " + FormatIDR.FormatIDR(order.getTotal_bayar()));
         holder.tanggalMasuk.setText("Masuk : " + order.getTanggal());
         holder.estimasiSelesai.setText("Est Sel : " + order.getEst_selesai());
         holder.statusPembayaran.setText(order.isBelum_bayar() ? "Belum Bayar" : "Sudah Bayar");
@@ -83,6 +84,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                         ArrayList<LayananItem> layananSelected = new ArrayList<>();
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             LayananItem layanan = doc.toObject(LayananItem.class);
+                            layanan.setIconLaundry(R.drawable.baseline_dry_cleaning_24);
                             Gson gson3 = new Gson();
 
                             String tes = gson3.toJson(layanan);
@@ -104,15 +106,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                                     if (docSnapshot.exists()) {
                                         OrderItem orderDetail = docSnapshot.toObject(OrderItem.class);
                                         Intent intent = new Intent(context, DetailOrderanActivity.class);
+                                        intent.putExtra("order", orderDetail); // pastikan OrderItem implement Serializable
+                                        intent.putExtra("selectedLayanan", layananSelected); // pastikan LayananItem implement Serializable
+                                        intent.putExtra("nama", orderDetail.getNama_pelanggan());
+                                        intent.putExtra("noHp", orderDetail.getNo_hp());
+                                        intent.putExtra("totalHarga", orderDetail.getTotal_bayar());
+                                        intent.putExtra("tanggalMasuk", orderDetail.getTanggal());
+                                        intent.putExtra("estiminasiSelesai", orderDetail.getEst_selesai());
                                         Log.i("iniuntukdetail", new Gson().toJson(orderDetail));
-//                                        intent.putExtra("order", gson2.toJson(orderDetail));
-//                                        intent.putExtra("layananList", gson2.toJson(layananSelected));
                                         context.startActivity(intent);
                                     }
                                 })
                                 .addOnFailureListener(e -> {
                                     Log.e("Firebase", "Gagal mengambil data antrian", e);
                                 });
+
 
                     })
                     .addOnFailureListener(e -> {

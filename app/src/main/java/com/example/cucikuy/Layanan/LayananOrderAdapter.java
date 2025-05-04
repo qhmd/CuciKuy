@@ -1,5 +1,6 @@
 package com.example.cucikuy.Layanan;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,9 @@ import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cucikuy.FormatIDR;
 import com.example.cucikuy.R;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -43,12 +46,13 @@ public class LayananOrderAdapter extends RecyclerView.Adapter<LayananOrderAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         LayananItem item = layananList.get(position);
+        Log.i("isiitem", new Gson().toJson(item));
         holder.tvNama.setText(item.getNama());
-        holder.tvHarga.setText("Rp " + item.getHarga_per_kg());
+        holder.tvHarga.setText("Rp "+FormatIDR.FormatIDR(item.getHarga_per_kg()));
         holder.tvDurasi.setText(item.getDurasi() + " hari");
         holder.tvJumlahKg.setText(item.getJumlah_kg() + " Kg");
         holder.imgIcon.setImageResource(item.getIconLaundry());
-        holder.tvHargaLayanan.setText("Rp " + item.getTotal_harga());
+        holder.tvHargaLayanan.setText("Rp " + FormatIDR.FormatIDR(item.getTotal_harga()));
     }
     @Override
     public int getItemCount() {

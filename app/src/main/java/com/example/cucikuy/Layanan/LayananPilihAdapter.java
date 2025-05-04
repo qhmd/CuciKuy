@@ -2,6 +2,7 @@
 
     import android.text.Editable;
     import android.text.TextWatcher;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -13,6 +14,7 @@
     import androidx.annotation.NonNull;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import com.example.cucikuy.FormatIDR;
     import com.example.cucikuy.R;
 
     import java.text.NumberFormat;
@@ -73,7 +75,7 @@
             // Menampilkan data layanan
             holder.tvNama.setText(item.getNama());
             holder.tvDurasi.setText(item.getDurasi());
-            holder.tvHarga.setText("Rp " + item.getHarga_per_kg());
+            holder.tvHarga.setText("Rp "+FormatIDR.FormatIDR(item.getHarga_per_kg()));
             holder.imgIcon.setImageResource(item.getIconLaundry());
 
             // Jika ada TextWatcher yang sebelumnya ditambahkan, hapus terlebih dahulu
@@ -147,6 +149,7 @@
                     try {
                         double hargaPerKg = (item.getHarga_per_kg());
                         double totalHarga = hargaPerKg * jumlahKg;
+                        Log.i("totalHarga", String.valueOf(totalHarga));
                         item.setTotal_harga(totalHarga); // Pastikan LayananItem punya method ini
                     } catch (NumberFormatException e) {
                         item.setTotal_harga(0); // Fallback
