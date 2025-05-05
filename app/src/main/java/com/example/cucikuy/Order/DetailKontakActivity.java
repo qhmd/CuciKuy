@@ -49,6 +49,8 @@ public class DetailKontakActivity extends AppCompatActivity {
     private List<LayananItem> layananList;
     private Boolean belum_bayar;
 
+    private ArrayList<OrderItem> orderList = new ArrayList<>();
+
     private LayananPilihAdapter adapter; // [✔️ Tambahan agar adapter bisa diakses di luar callback Firestore]
     private double totalHarga = 0.0;// [✔️ Tambahan untuk menyimpan total harga secara global]
     private String noNota;
@@ -139,6 +141,37 @@ public class DetailKontakActivity extends AppCompatActivity {
                         OrderItem orderItem = new OrderItem();
                         orderItem.setBelum_bayar(belum_bayar); // ✅ set nilai dari variabel kamu
                         sendDetailOrder();
+
+                        orderItem.setNama_pelanggan(namaKontak);
+                        orderItem.setNo_hp(noHp);
+                        orderItem.setEst_selesai(estiminasiSelesai);
+                        orderItem.setNo_nota(noNota);
+                        orderItem.setBelum_bayar(belum_bayar);
+                        orderItem.setTanggal(tanggal);
+                        orderItem.setJenis_durasi(durasi);
+
+                        Object total = totalHarga;
+                        double totalBayar = 0.0;
+                        Log.w("fetchOrders", String.valueOf(total));
+
+//                                Log.w("fetchOrders", (String) total);
+                        if (total instanceof Number) {
+                            totalBayar = ((Number) total).doubleValue();
+                        } else if (total instanceof String) {
+                            try {
+                                totalBayar = Double.parseDouble((String) total);
+                            } catch (NumberFormatException e) {
+                                Log.w("fetchOrders", "Format total_bayar salah di dokumen: ");
+                            }
+                        }
+
+                        orderItem.setTotal_bayar(totalBayar);
+
+                        // Tambahkan ke list jika semua aman
+                        Gson gson = new Gson();
+                        String json = gson.toJson(orderItem);
+                        Log.i("fetchOrders", json);
+                        orderList.add(orderItem);
 
                         intent.putExtra("order", orderItem); // ✅ kirim order-nya
                         intent.putExtra("selectedLayanan", (Serializable) selectedLayanan);
