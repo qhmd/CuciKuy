@@ -52,7 +52,7 @@
         <activity android:name=".Layanan.LayananPilihAdapter"/>
         <activity android:name=".Layanan.LayananOrderAdapter"/>
         <activity android:name=".Order.DetailOrderanActivity"/>
-
+        <activity android:name=".WaNota"/>
 
         <!-- HAPUS bagian ini karena bukan activity -->
         <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->

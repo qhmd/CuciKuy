@@ -3,6 +3,7 @@
     import android.content.Intent;
     import android.os.Bundle;
     import android.util.Log;
+    import android.widget.Button;
     import android.widget.TextView;
 
     import androidx.activity.OnBackPressedCallback;
@@ -15,12 +16,15 @@
     import com.example.cucikuy.Layanan.LayananItem;
     import com.example.cucikuy.Layanan.LayananOrderAdapter;
     import com.example.cucikuy.R;
+    import com.example.cucikuy.WaNota;
+    import com.google.firebase.firestore.FirebaseFirestore;
     import com.google.gson.Gson;
 
     import java.util.ArrayList;
     import java.util.Formatter;
 
     public class DetailOrderanActivity extends AppCompatActivity {
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -37,6 +41,9 @@
             TextView tvTanggalMsuk = findViewById(R.id.tanggal_masuk);
             TextView tvEstSelesai = findViewById(R.id.est_seleai);
 
+            Button btnKirimWa = findViewById(R.id.kirimWa);
+
+
 
             tvNama.setText(nama);
             tvTotalHarga.setText("Rp " +FormatIDR.FormatIDR(totalHarga));
@@ -51,10 +58,20 @@
             Gson gson = new Gson();
             String isinya = gson.toJson(selectedLayanan);
             Log.d("DetailOrderan", "selectedLayanan: " + isinya);
+            Log.d("DetailOrderan", "order : " + new Gson().toJson(order));
             if (selectedLayanan != null) {
                 LayananOrderAdapter adapter = new LayananOrderAdapter(selectedLayanan);
                 recyclerView.setAdapter(adapter);
             }
+
+            btnKirimWa.setOnClickListener(v -> {
+                Intent intent = new Intent(DetailOrderanActivity.this, WaNota.class);
+                intent.putExtra("order", order);
+                intent.putExtra("selectedLayanan", selectedLayanan);
+                startActivity(intent);
+                finish();
+            });
+
             OnBackPressedCallback callback = new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {

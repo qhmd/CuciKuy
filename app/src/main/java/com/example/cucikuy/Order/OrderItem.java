@@ -11,6 +11,8 @@ public class OrderItem implements Serializable {
     private String est_selesai;
     private String no_nota;
     private boolean belum_bayar;
+    private boolean belum_siap;
+    private boolean belum_selesai;
     private String tanggal;
     private double total_bayar;
     private String jenis_durasi;
@@ -57,6 +59,22 @@ public class OrderItem implements Serializable {
 
     public void setBelum_bayar(boolean belum_bayar) {
         this.belum_bayar = belum_bayar;
+    }
+
+    public boolean isBelum_siap() {
+        return belum_bayar;
+    }
+
+    public void setBelum_siap(boolean belum_siap) {
+        this.belum_siap = belum_siap;
+    }
+
+    public boolean isBelum_selesai() {
+        return belum_bayar;
+    }
+
+    public void setBelum_selesai(boolean belum_selesai) {
+        this.belum_selesai = belum_selesai;
     }
 
     public String getTanggal() {
