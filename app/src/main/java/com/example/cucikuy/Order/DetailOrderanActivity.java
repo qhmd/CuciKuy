@@ -3,11 +3,15 @@
     import android.content.Intent;
     import android.os.Bundle;
     import android.util.Log;
+    import android.view.View;
     import android.widget.Button;
     import android.widget.TextView;
+    import android.widget.Toast;
 
     import androidx.activity.OnBackPressedCallback;
+    import androidx.appcompat.app.AlertDialog;
     import androidx.appcompat.app.AppCompatActivity;
+    import androidx.core.content.ContextCompat;
     import androidx.recyclerview.widget.LinearLayoutManager;
     import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +21,9 @@
     import com.example.cucikuy.Layanan.LayananOrderAdapter;
     import com.example.cucikuy.R;
     import com.example.cucikuy.WaNota;
+    import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+    import com.google.firebase.auth.FirebaseAuth;
+    import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.firestore.FirebaseFirestore;
     import com.google.gson.Gson;
 
@@ -24,7 +31,7 @@
     import java.util.Formatter;
 
     public class DetailOrderanActivity extends AppCompatActivity {
-
+        private String orderId;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -34,6 +41,18 @@
             String noHp = getIntent().getStringExtra("noHp");
             String tanggalMasuk = getIntent().getStringExtra("tanggalMasuk");
             String estimasiSelesai = getIntent().getStringExtra("estiminasiSelesai");
+            String nota = getIntent().getStringExtra("nota");
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                for (String key : extras.keySet()) {
+                    Object value = extras.get(key);
+                    Log.d("IntentExtra", key + " : " + value);
+                }
+            } else {
+                Log.d("IntentExtra", "No extras in intent");
+            }
+
+
 
             TextView tvNama = findViewById(R.id.tv_nama_kontak );
             TextView tvTotalHarga = findViewById(R.id.total_harga);
@@ -42,7 +61,9 @@
             TextView tvEstSelesai = findViewById(R.id.est_seleai);
 
             Button btnKirimWa = findViewById(R.id.kirimWa);
-
+            Button btnPembayaran = findViewById(R.id.pembayran_selesai);
+            Button btnPesananSiap = findViewById(R.id.pesanan_siap);
+            Button btnPesananSelesai = findViewById(R.id.pesanan_selesai);
 
 
             tvNama.setText(nama);
@@ -55,6 +76,27 @@
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             OrderItem order = (OrderItem) getIntent().getSerializableExtra("order");
             ArrayList<LayananItem> selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");
+            Log.i("gson",new Gson().toJson(order));
+
+            if (order == null || selectedLayanan == null) {
+                Toast.makeText(this, "Data pesanan tidak tersedia", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+
+            TextView statusPembayaran = findViewById(R.id.belum_bayar);
+            statusPembayaran.setText(order.isBelum_bayar() ? "Belum Bayar " : "Sudah Bayar");
+
+            FirebaseUser mAuth = FirebaseAuth.getInstance().getCurrentUser();
+            String userId = mAuth.getUid(); // pastikan order menyimpan userId
+            orderId = order.getNo_nota(); // misalnya: "CUCI-202505045"
+
+            if (orderId == null ) {
+                if (nota != null) {
+                    Log.i("isinota", nota);
+                    orderId = nota;
+                }
+            }
             Gson gson = new Gson();
             String isinya = gson.toJson(selectedLayanan);
             Log.d("DetailOrderan", "selectedLayanan: " + isinya);
@@ -63,14 +105,121 @@
                 LayananOrderAdapter adapter = new LayananOrderAdapter(selectedLayanan);
                 recyclerView.setAdapter(adapter);
             }
+            if (!order.isBelum_bayar() && !order.isBelum_siap()) {
+                btnPesananSiap.setVisibility(View.GONE);
+            }
+
 
             btnKirimWa.setOnClickListener(v -> {
+                Log.i("isiorder", new Gson().toJson(order));
+                Log.i("isiorder", new Gson().toJson(selectedLayanan));
                 Intent intent = new Intent(DetailOrderanActivity.this, WaNota.class);
                 intent.putExtra("order", order);
+                intent.putExtra("noHp", noHp);
+                Log.i("liatnohp","tes" + noHp);
                 intent.putExtra("selectedLayanan", selectedLayanan);
                 startActivity(intent);
                 finish();
             });
+
+            btnPembayaran.setOnClickListener(v -> {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                        .setTitle("Konfirmasi")
+                        .setMessage("Pelanggan telah membayar")
+                        .setPositiveButton("Ya", (dialog, which) -> {
+                            if (order != null) {
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users")
+                                        .document(userId)
+                                        .collection("pesanan")
+                                        .document("statusPesanan")
+                                        .collection("antrian")
+                                        .document(orderId)
+                                        .update("belum_bayar", false)
+                                        .addOnSuccessListener(aVoid ->{
+                                            Log.d("UpdateStatus", "Status berhasil diupdate");
+
+                                            // Kirim ke WhatsApp melalui WaNota
+                                            Intent intent = new Intent(this, WaNota.class);
+                                            intent.putExtra("from_pembayaran", true); // flag agar tahu ini dari konfirmasi pembayaran
+                                            intent.putExtra("noNota", order.getNo_nota());
+                                            intent.putExtra("nama", order.getNama_pelanggan());
+                                            intent.putExtra("totalHarga", order.getTotal_bayar());
+                                            intent.putExtra("noHp", order.getNo_hp());
+                                            Log.i("liatnohp",order.getNo_hp());
+                                            startActivity(intent);
+                                            }
+                                        )
+                                        .addOnFailureListener(e -> Log.e("UpdateStatus", "Gagal update status", e));
+                            }
+                        })
+
+                        .setNegativeButton("Tidak", (dialog, which) -> {});
+                        AlertDialog dialog = builder.create();
+                        dialog.setOnShowListener(d -> {
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.black));
+                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.black));
+                        });
+                        dialog.show();
+            });
+
+
+            btnPesananSiap.setOnClickListener(v -> {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                        .setTitle("Konfirmasi")
+                        .setMessage("Pesanan telah selesai ?")
+                        .setPositiveButton("Ya", (dialog, which) -> {
+                            if (order != null) {
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users")
+                                        .document(userId)
+                                        .collection("pesanan")
+                                        .document("statusPesanan")
+                                        .collection("antrian")
+                                        .document(orderId)
+                                        .update("belum_siap", false)
+                                        .addOnSuccessListener(aVoid -> Log.d("UpdateStatus", "Status berhasil diupdate"))
+                                        .addOnFailureListener(e -> Log.e("UpdateStatus", "Gagal update status", e));
+                            }
+                        })
+
+                        .setNegativeButton("Tidak", (dialog, which) -> {});
+                AlertDialog dialog = builder.create();
+                dialog.setOnShowListener(d -> {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.black));
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.black));
+                });
+                dialog.show();
+            });
+
+            btnPesananSelesai.setOnClickListener(v -> {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                        .setTitle("Konfirmasi")
+                        .setMessage("Pesanan telah selesai ?")
+                        .setPositiveButton("Ya", (dialog, which) -> {
+                            if (order != null) {
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users")
+                                        .document(userId)
+                                        .collection("pesanan")
+                                        .document("statusPesanan")
+                                        .collection("antrian")
+                                        .document(orderId)
+                                        .update("belum_siap", false)
+                                        .addOnSuccessListener(aVoid -> Log.d("UpdateStatus", "Status berhasil diupdate"))
+                                        .addOnFailureListener(e -> Log.e("UpdateStatus", "Gagal update status", e));
+                            }
+                        })
+
+                        .setNegativeButton("Tidak", (dialog, which) -> {});
+                AlertDialog dialog = builder.create();
+                dialog.setOnShowListener(d -> {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.black));
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.black));
+                });
+                dialog.show();
+            });
+
 
             OnBackPressedCallback callback = new OnBackPressedCallback(true) {
                 @Override

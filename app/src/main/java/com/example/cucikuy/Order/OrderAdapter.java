@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cucikuy.FormatIDR;
@@ -64,7 +65,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.totalPembayaran.setText("Rp " + FormatIDR.FormatIDR(order.getTotal_bayar()));
         holder.tanggalMasuk.setText("Masuk : " + order.getTanggal());
         holder.estimasiSelesai.setText("Est Sel : " + order.getEst_selesai());
-        holder.statusPembayaran.setText(order.isBelum_bayar() ? "Belum Bayar" : "Sudah Bayar");
+        if (order.isBelum_bayar()) {
+            holder.statusPembayaran.setText("Belum Bayar");
+            holder.statusPembayaran.setTextColor(ContextCompat.getColor(context, R.color.red)); // atau warna lain
+        } else {
+            holder.statusPembayaran.setText("Sudah Bayar");
+            holder.statusPembayaran.setTextColor(ContextCompat.getColor(context, R.color.gray)); // misalnya abu-abu
+        }
+
 
         holder.itemView.setOnClickListener(v -> {
             Log.i("ketekan", "Item diklik");

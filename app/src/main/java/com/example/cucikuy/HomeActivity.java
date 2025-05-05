@@ -13,6 +13,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_for_fragment);
         NavController navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment);
         BottomNavigationView bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);

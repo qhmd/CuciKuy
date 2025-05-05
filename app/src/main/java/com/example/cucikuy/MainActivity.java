@@ -51,6 +51,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // ✅ Cek apakah user sudah login
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Jika sudah login → langsung ke HomeActivity
+            startActivity(new Intent(MainActivity.this, HomeActivity.class));
+            finish(); // Jangan kembali ke login
+            return;
+        }
+
+        // Jika belum login → lanjutkan ke UI login
         setContentView(R.layout.activity_main);
         spinner = findViewById(R.id.googleProgress);
         darkOverlay = findViewById(R.id.darkOverlay);
@@ -65,17 +76,15 @@ public class MainActivity extends AppCompatActivity {
                 googleText.setText("Loading...");
                 darkOverlay.setVisibility(View.VISIBLE);
                 Blurry.with(MainActivity.this)
-                        .radius(5)         // tingkat blur (0–25)
-                        .sampling(2)        // pengambilan sampel (semakin besar, semakin ringan proses)
-                        .onto(blurTarget);  // layout yang akan diblur
-                sign_btn.setEnabled(false); // opsional: disable agar tidak ditekan berkali-kali
+                        .radius(5)
+                        .sampling(2)
+                        .onto(blurTarget);
+                sign_btn.setEnabled(false);
                 spinner.setVisibility(View.VISIBLE);
                 signup();
             }
         });
-
     }
-
     private void signup() {
         // trigger One Tap Sign-In
         one_tap_client = Identity.getSignInClient(this);

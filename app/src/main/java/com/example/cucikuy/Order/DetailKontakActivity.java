@@ -51,6 +51,7 @@ public class DetailKontakActivity extends AppCompatActivity {
 
     private LayananPilihAdapter adapter; // [✔️ Tambahan agar adapter bisa diakses di luar callback Firestore]
     private double totalHarga = 0.0;// [✔️ Tambahan untuk menyimpan total harga secara global]
+    private String noNota;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,6 @@ public class DetailKontakActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_orderan);
 
         belum_bayar = true;
-
         // Ambil data dari Intent
         durasi = getIntent().getStringExtra("durasiNama");
         namaKontak = getIntent().getStringExtra("nama");
@@ -133,16 +133,23 @@ public class DetailKontakActivity extends AppCompatActivity {
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(durasiJam));
                         estiminasiSelesai = sdf.format(calendar.getTime());
-
                         List<LayananItem> selectedLayanan = adapter.getSelectedLayanan();
                         Intent intent = new Intent(DetailKontakActivity.this, DetailOrderanActivity.class);
 
+                        OrderItem orderItem = new OrderItem();
+                        orderItem.setBelum_bayar(belum_bayar); // ✅ set nilai dari variabel kamu
+                        sendDetailOrder();
+
+                        intent.putExtra("order", orderItem); // ✅ kirim order-nya
+                        intent.putExtra("selectedLayanan", (Serializable) selectedLayanan);
                         intent.putExtra("totalHarga", totalHarga); // [✔️ Kirim total harga]
                         intent.putExtra("nama", namaKontak);
                         intent.putExtra("noHp", noHp);
                         intent.putExtra("namaDurasi", durasi);
                         intent.putExtra("tanggalMasuk", tanggal);
                         intent.putExtra("estiminasiSelesai",estiminasiSelesai);
+                        intent.putExtra("nota", noNota);
+//                        intent.putExtra("no_hp", tvNoHp.getText().toString());
                         intent.putExtra("selectedLayanan", (Serializable) selectedLayanan); // [✔️ Kirim layanan yang dipilih]
                         for (LayananItem item : selectedLayanan) {
                             Log.i("apadipilih",
@@ -152,8 +159,7 @@ public class DetailKontakActivity extends AppCompatActivity {
                                             ", Total Harga: " + item.getTotal_harga() +
                                             ", JumlahKg: " + item.getJumlah_kg());
                         }
-                        Log.i("apadipilih", String.valueOf(totalHarga));
-                        sendDetailOrder();
+                        Log.i("apadipilih", new Gson().toJson(selectedLayanan));
                         startActivity(intent);
                         finish();
                     }
@@ -183,7 +189,7 @@ public class DetailKontakActivity extends AppCompatActivity {
         // Ambil jmlOrder sekarang
         int jmlOrder = prefs.getInt("jmlOrder", 1);
         Log.i("jmlhorder", String.valueOf(jmlOrder));
-        String noNota = "CUCI-" + new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date()) + jmlOrder;
+        noNota = "CUCI-" + new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date()) + jmlOrder;
         editor.putInt("jmlOrder", jmlOrder + 1);
         editor.apply();
         //estiminasi selesai
@@ -196,7 +202,7 @@ public class DetailKontakActivity extends AppCompatActivity {
         pesanan.put("nama_pelanggan", tvNama.getText().toString());
         pesanan.put("no_hp", tvNoHp.getText().toString());
         pesanan.put("belum_bayar", belum_bayar);
-        pesanan.put("belum _siap", belum_bayar);
+        pesanan.put("belum_siap", belum_bayar);
         pesanan.put("belum_selesai", belum_bayar);
         if (tvAlamat != null) {
             String alamat = tvAlamat.getText().toString().trim();
