@@ -116,7 +116,7 @@
 
             Log.d("tesss", "isBelum_siap: " + order.isBelum_siap());
 
-            if (!order.isBelum_siap()) {
+            if (!order.isBelum_siap() && !order.isBelum_bayar()) {
                 btnPesananSiap.setVisibility(View.GONE);
             }
 
@@ -126,6 +126,7 @@
                 Log.i("isiorder", new Gson().toJson(order));
                 Log.i("isiorder", new Gson().toJson(selectedLayanan));
                 Intent intent = new Intent(DetailOrderanActivity.this, WaNota.class);
+                intent.putExtra("status_kirim_nota", true);
                 intent.putExtra("order", order);
                 intent.putExtra("noHp", noHp);
                 Log.i("liatnohp","tes" + noHp);
@@ -233,11 +234,10 @@
                                         .update("belum_siap", false)
                                         .addOnSuccessListener(aVoid -> {
                                             Log.d("UpdateStatus", "Status berhasil diupdate");
-
                                             // Kirim WhatsApp lewat WaNota
                                             Intent intent = new Intent(this, WaNota.class);
                                             intent.putExtra("from_status_siap", true); // Tambahkan flag ini
-//                                            intent.putExtra("selectedLayanan", selectedLayanan);
+                                            intent.putExtra("selectedLayanan", selectedLayanan);
                                             intent.putExtra("order", order); // Pastikan OrderItem implements Serializable
                                             startActivity(intent);
                                         })

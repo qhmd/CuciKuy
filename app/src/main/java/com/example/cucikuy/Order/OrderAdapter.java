@@ -125,7 +125,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                                             intent.putExtra("alamat", orderDetail.getAlamat());
                                         }
                                         Log.i("iniuntukdetail", new Gson().toJson(orderDetail));
-                                        Log.i("iniuntukalamat",orderDetail.getAlamat());
                                         context.startActivity(intent);
                                     }
                                 })

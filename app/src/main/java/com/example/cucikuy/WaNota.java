@@ -22,6 +22,7 @@ public class WaNota extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private OrderItem order;
     private boolean fromStatusSiap = false;
+    private boolean fromStatusKirimNota = false;
 
     private ArrayList<LayananItem> selectedLayanan;
     private String namaLaundry = "", alamatLaundry = "", noHpLaundry = "";
@@ -36,9 +37,11 @@ public class WaNota extends AppCompatActivity {
 
         fromPembayaran = getIntent().getBooleanExtra("from_pembayaran", false);
         fromStatusSiap = getIntent().getBooleanExtra("from_status_siap", false);
+        fromStatusKirimNota = getIntent().getBooleanExtra("status_kirim_nota", false);
 
+        Log.w("inistatussiap", "statussiap" + fromStatusSiap );
         if (fromStatusSiap) {
-            selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");
+            Log.w("inistatussiap","MAasukk" );
             order = (OrderItem) getIntent().getSerializableExtra("order");
             if (order == null) {
                 Toast.makeText(this, "Data order tidak tersedia", Toast.LENGTH_SHORT).show();
@@ -55,7 +58,9 @@ public class WaNota extends AppCompatActivity {
             totalHargaPembayaran = getIntent().getDoubleExtra("totalHarga", 0.0);
             noHpPembayaran = getIntent().getStringExtra("noHp");
             loadProfilLaundryAndSendPayment();
-        } else {
+        }
+
+        if (fromStatusKirimNota){
             // Ambil data dari Intent untuk pengiriman nota lengkap
             order = (OrderItem) getIntent().getSerializableExtra("order");
             selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");
@@ -155,6 +160,7 @@ public class WaNota extends AppCompatActivity {
     }
 
     private String buildNotaWhatsApp(OrderItem order, ArrayList<LayananItem> layananList, String ketentuan) {
+        Log.w("inistatussiap", "kenapa disni");
         StringBuilder sb = new StringBuilder();
         sb.append(namaLaundry).append("\n");
         sb.append("Alamat : ").append(alamatLaundry).append("\n");
@@ -168,12 +174,13 @@ public class WaNota extends AppCompatActivity {
         sb.append("Est Selesai : ").append(order.getEst_selesai()).append("\n");
         sb.append("----------------------------------------\n");
         sb.append("LAYANAN\n");
-
-        for (LayananItem item : layananList) {
-            sb.append(item.getNama()).append(" (").append(item.getDurasi()).append(")\n");
-            sb.append(item.getJumlah_kg()).append(" kg x Rp ")
-                    .append(FormatIDR.FormatIDR(item.getHarga_per_kg())).append(" = ")
-                    .append("Rp ").append(FormatIDR.FormatIDR(item.getTotal_harga())).append("\n");
+        if (layananList != null) {
+            for (LayananItem item : layananList) {
+                sb.append(item.getNama()).append(" (").append(item.getDurasi()).append(")\n");
+                sb.append(item.getJumlah_kg()).append(" kg x Rp ")
+                        .append(FormatIDR.FormatIDR(item.getHarga_per_kg())).append(" = ")
+                        .append("Rp ").append(FormatIDR.FormatIDR(item.getTotal_harga())).append("\n");
+            }
         }
 
         sb.append("----------------------------------------\n");
@@ -186,6 +193,7 @@ public class WaNota extends AppCompatActivity {
     }
 
     private void loadProfilLaundryAndSendStatusSiap() {
+        Log.w("inistatussiap", "sampaisini" );
         String userId = mAuth.getCurrentUser().getUid();
         db.collection("users").document(userId).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -201,7 +209,7 @@ public class WaNota extends AppCompatActivity {
                                 + "Harga Akhir : Rp " + FormatIDR.FormatIDR(order.getTotal_bayar()) + "\n"
                                 + "Status : " + status + "\n\n"
                                 + "Terima kasih,\n" + namaLaundry;
-
+                        Log.w("inistatussiap", pesan );
                         kirimKeWhatsApp(order.getNo_hp(), pesan);
                     } else {
                         Toast.makeText(this, "Data laundry tidak ditemukan", Toast.LENGTH_SHORT).show();

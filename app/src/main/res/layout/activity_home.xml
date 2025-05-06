@@ -67,6 +67,7 @@
             android:layout_below="@id/jumlah_pesanan"
             />
         <TextView
+            android:id="@+id/jumlah_kg_today"
             android:layout_below="@id/garis_pesanan"
             android:layout_width="match_parent"
             android:gravity="center"
