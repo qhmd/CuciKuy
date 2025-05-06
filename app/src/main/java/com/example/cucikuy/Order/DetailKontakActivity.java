@@ -43,7 +43,7 @@ import java.util.TimeZone;
 public class DetailKontakActivity extends AppCompatActivity {
     private TextView tvNama, tvNoHp, tvAlamat;
     String namaKontak, durasi, noHp, durasiJam, estiminasiSelesai, tanggal;
-    String userId;
+    String userId, alamat;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button btn_tambah_order;
     private List<LayananItem> layananList;
@@ -66,10 +66,20 @@ public class DetailKontakActivity extends AppCompatActivity {
         namaKontak = getIntent().getStringExtra("nama");
         noHp = getIntent().getStringExtra("nomor");
         durasiJam = getIntent().getStringExtra("durasiJam");
+        alamat = getIntent().getStringExtra("alamat");
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            for (String key : extras.keySet()) {
+                Object value = extras.get(key);
+                Log.d("IntentExtrates", key + " : " + value);
+            }
+        } else {
+            Log.d("IntentExtra", "No extras in intent");
+        }
+
         // Set TextView
         tvNama = findViewById(R.id.tv_nama_kontak);
         tvNoHp = findViewById(R.id.tv_no_hp);
-        tvAlamat = findViewById(R.id.tv_alamat);
         TextView tvTotalHarga = findViewById(R.id.tv_total_harga); // [✔️ Menyimpan referensi TextView total harga]
         btn_tambah_order = findViewById(R.id.btn_add_orderan);
 
@@ -178,6 +188,7 @@ public class DetailKontakActivity extends AppCompatActivity {
                         intent.putExtra("totalHarga", totalHarga); // [✔️ Kirim total harga]
                         intent.putExtra("nama", namaKontak);
                         intent.putExtra("noHp", noHp);
+                        intent.putExtra("alamat", alamat);
                         intent.putExtra("namaDurasi", durasi);
                         intent.putExtra("tanggalMasuk", tanggal);
                         intent.putExtra("estiminasiSelesai",estiminasiSelesai);
@@ -237,11 +248,11 @@ public class DetailKontakActivity extends AppCompatActivity {
         pesanan.put("belum_bayar", belum_bayar);
         pesanan.put("belum_siap", belum_bayar);
         pesanan.put("belum_selesai", belum_bayar);
-        if (tvAlamat != null) {
-            String alamat = tvAlamat.getText().toString().trim();
-            if (!alamat.isEmpty()) {
+        if (alamat != null) {
+//            alamat = tvAlamat.getText().toString().trim();
+//            if (!alamat.isEmpty()) {
                 pesanan.put("alamat", alamat);
-            }
+//            }
         }
         db.collection("users")
                 .document(userId)

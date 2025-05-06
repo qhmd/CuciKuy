@@ -35,6 +35,7 @@
 
     public class DetailOrderanActivity extends AppCompatActivity {
         private String orderId;
+        private String alamat;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -42,6 +43,7 @@
             String nama = getIntent().getStringExtra("nama");
             Double totalHarga = getIntent().getDoubleExtra("totalHarga", 0.0);
             String noHp = getIntent().getStringExtra("noHp");
+            alamat = getIntent().getStringExtra("alamat");
             String tanggalMasuk = getIntent().getStringExtra("tanggalMasuk");
             String estimasiSelesai = getIntent().getStringExtra("estiminasiSelesai");
             String nota = getIntent().getStringExtra("nota");
@@ -49,7 +51,7 @@
             if (extras != null) {
                 for (String key : extras.keySet()) {
                     Object value = extras.get(key);
-                    Log.d("IntentExtra", key + " : " + value);
+                    Log.d("IntentExtraBro", key + " : " + value);
                 }
             } else {
                 Log.d("IntentExtra", "No extras in intent");
@@ -63,6 +65,7 @@
             TextView tvTanggalMsuk = findViewById(R.id.tanggal_masuk);
             TextView tvEstSelesai = findViewById(R.id.est_seleai);
             TextView tvStatusPesanan = findViewById(R.id.statusPesanan);
+            TextView tvAlamat = findViewById(R.id.tv_alamat);
 
 
             Button btnKirimWa = findViewById(R.id.kirimWa);
@@ -75,6 +78,7 @@
             tvNoHp.setText(noHp);
             tvTanggalMsuk.setText(tanggalMasuk);
             tvEstSelesai.setText(estimasiSelesai);
+            tvAlamat.setText(alamat);
 
             RecyclerView recyclerView = findViewById(R.id.rv_layanan_dipilih);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));

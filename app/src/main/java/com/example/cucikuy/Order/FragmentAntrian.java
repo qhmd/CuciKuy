@@ -93,6 +93,7 @@ public class FragmentAntrian extends Fragment {
                                     orderItem.setBelum_bayar(Boolean.TRUE.equals(document.getBoolean("belum_bayar")));
                                     orderItem.setTanggal(document.getString("tanggal"));
                                     orderItem.setJenis_durasi(document.getString("jenis_durasi"));
+                                    orderItem.setAlamat(document.getString("alamat"));
 
                                     // proses total_bayar seperti sebelumnya
                                     Object total = document.get("total_bayar");
