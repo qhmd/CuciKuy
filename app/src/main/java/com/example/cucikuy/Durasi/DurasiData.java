@@ -48,4 +48,33 @@ public class DurasiData {
             }
         });
     }
+    public void deleteDurasi(String namaDurasi, DeleteCallback callback) {
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(mAuth.getCurrentUser().getUid())
+                .collection("durasi")
+                .whereEqualTo("nama_durasi", namaDurasi) // Menggunakan nama_durasi untuk mencari dokumen
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        // Ambil dokumen pertama (karena nama durasi harus unik)
+                        String durasiId = task.getResult().getDocuments().get(0).getId();
+                        FirebaseFirestore.getInstance()
+                                .collection("users")
+                                .document(mAuth.getCurrentUser().getUid())
+                                .collection("durasi")
+                                .document(durasiId) // Menghapus dokumen berdasarkan ID
+                                .delete()
+                                .addOnSuccessListener(aVoid -> callback.onSuccess())
+                                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+                    } else {
+                        callback.onFailure("Durasi tidak ditemukan.");
+                    }
+                });
+    }
+
+    public interface DeleteCallback {
+        void onSuccess();
+        void onFailure(String error);
+    }
 }

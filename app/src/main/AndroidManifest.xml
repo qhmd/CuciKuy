@@ -38,10 +38,8 @@
         <activity android:name=".Order.DetailKontakActivity" android:exported="true" />
         <activity android:name=".Pengaturan.PengaturanAkunActivity"/>
         <activity android:name=".Pengaturan.PengaturanTokoActivity"/>
-        <activity android:name=".Pengaturan.PengaturanDurasiActivity"/>
+        <activity android:name=".Durasi.PengaturanDurasiActivity"/>
         <activity android:name=".Pengaturan.PengaturanLayananActivity"/>
-        <activity android:name=".Pengaturan.PengaturanParfumActivity"/>
-        <activity android:name=".Pengaturan.PengaturanDiskonActivity"/>
         <activity android:name=".Pengaturan.PengaturanPelangganActivity"/>
         <activity android:name=".Pengaturan.PengaturanNotaActivity"/>
         <activity android:name=".Durasi.TambahDurasi"/>
@@ -53,6 +51,7 @@
         <activity android:name=".Layanan.LayananOrderAdapter"/>
         <activity android:name=".Order.DetailOrderanActivity"/>
         <activity android:name=".WaNota"/>
+        <activity android:name=".Durasi.EditDurasi"/>
 
         <!-- HAPUS bagian ini karena bukan activity -->
         <!-- <activity android:name=".KontakAdapter" android:exported="true" /> -->

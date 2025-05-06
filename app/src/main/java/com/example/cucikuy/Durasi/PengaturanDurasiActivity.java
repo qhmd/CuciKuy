@@ -1,4 +1,4 @@
-package com.example.cucikuy.Pengaturan;
+package com.example.cucikuy.Durasi;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cucikuy.Durasi.DurasiAdapater;
-import com.example.cucikuy.Durasi.DurasiData;
-import com.example.cucikuy.Durasi.DurasiItem;
 import com.example.cucikuy.R;
-import com.example.cucikuy.Durasi.TambahDurasi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,21 +36,21 @@ public class PengaturanDurasiActivity extends AppCompatActivity {
         // Inisialisasi list dulu
         durasiItemList = new ArrayList<>();
 
-        //bikin adapter setelah list terisin
+        // Bikin adapter setelah list terisin
         durasiAdapater = new DurasiAdapater(durasiItemList, DurasiAdapater.LAYOUT_DEFAULT);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(durasiAdapater);
 
-        DurasiData dataLoaeder = new DurasiData();
+        DurasiData dataLoader = new DurasiData();
 
-        dataLoaeder.loadDurasiData(new DurasiData.DataCallback() {
-
+        // Ambil data dari Firestore
+        dataLoader.loadDurasiData(new DurasiData.DataCallback() {
             @Override
             public void onDataLoaded(List<DurasiItem> durasiItemListFirestore) {
                 durasiItemList.clear();
                 durasiItemList.addAll(durasiItemListFirestore);
-                durasiAdapater.notifyDataSetChanged(); // <-- Perbaiki di sini
+                durasiAdapater.notifyDataSetChanged();
             }
 
             @Override
@@ -63,16 +59,41 @@ public class PengaturanDurasiActivity extends AppCompatActivity {
             }
         });
 
+        // Tambah Durasi
         btn_add_durasi = findViewById(R.id.btn_add_durasi);
-        recyclerView = findViewById(R.id.rv_data_durasi);
+        btn_add_durasi.setOnClickListener(v -> {
+            Intent intent = new Intent(PengaturanDurasiActivity.this, TambahDurasi.class);
+            startActivity(intent);
+            finish();
+        });
 
-
-        btn_add_durasi.setOnClickListener(new View.OnClickListener() {
+        // Set Edit dan Delete listener di adapter
+        durasiAdapater.setOnEditClickListener(new DurasiAdapater.OnEditClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PengaturanDurasiActivity.this, TambahDurasi.class);
+            public void onEditClick(DurasiItem item) {
+                Intent intent = new Intent(PengaturanDurasiActivity.this, EditDurasi.class);
+                Log.i("namadurasi", item.getNameDurasi());
+                intent.putExtra("nameDurasi", item.getNameDurasi());
                 startActivity(intent);
-                finish();
+            }
+        });
+
+        durasiAdapater.setOnDeleteClickListener(new DurasiAdapater.OnDeleteClickListener() {
+            @Override
+            public void onDeleteClick(DurasiItem item) {
+                DurasiData dataHandler = new DurasiData();
+                dataHandler.deleteDurasi(item.getNameDurasi(), new DurasiData.DeleteCallback() {
+                    @Override
+                    public void onSuccess() {
+                        durasiItemList.remove(item);
+                        durasiAdapater.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Log.e("DeleteError", error);
+                    }
+                });
             }
         });
     }

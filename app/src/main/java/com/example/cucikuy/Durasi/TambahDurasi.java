@@ -12,11 +12,11 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.cucikuy.Pengaturan.PengaturanDurasiActivity;
 import com.example.cucikuy.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,18 +52,21 @@ public class TambahDurasi extends AppCompatActivity {
         btn_add_durasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("editDurasi", "ini di klik");
                 String namaDurasi = nama_durasi.getText().toString();
                 String waktuDurasi = waktu_durasi.getText().toString();
                 Map<String, Object> data = new HashMap<>();
                 data.put("nama_durasi", namaDurasi);
                 data.put("waktu_durasi", waktuDurasi);
+                Log.i("editDurasi", uid);
+                Log.i("editDurasi", new Gson().toJson(data));
                 db.collection("users")
                         .document(uid)
                         .collection("durasi")
                         .document(namaDurasi)
                         .set(data)
                         .addOnSuccessListener(aVoid -> {
-                            Log.d("Firestore", "Kontak berhasil disimpan dengan nomor HP sebagai ID!");
+                            Log.d("FirestoreBro", "Kontak berhasil disimpan dengan nomor HP sebagai ID!");
                             updateUI();
                         })
                         .addOnFailureListener(e -> {
@@ -71,7 +74,7 @@ public class TambahDurasi extends AppCompatActivity {
                             btn_add_durasi.setEnabled(true);
                             darkOverlay.setVisibility(View.GONE);
                             Blurry.delete(blurTarget);
-                            Log.w("Firestore", "Gagal menyimpan kontak", e);
+                            Log.w("FirestoreBro", "Gagal menyimpan kontak", e);
                         });
             }
         });

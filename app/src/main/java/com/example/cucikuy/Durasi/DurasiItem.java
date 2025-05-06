@@ -12,6 +12,8 @@ public class DurasiItem implements Parcelable {
     private int editDurasi;
     private int deleteDurasi;
 
+    public DurasiItem() {}
+
     public DurasiItem(String nameDurasi, String jamDurasi, int editDurasi, int deleteDurasi) {
         this.nameDurasi = nameDurasi;
         this.jamDurasi = jamDurasi;
