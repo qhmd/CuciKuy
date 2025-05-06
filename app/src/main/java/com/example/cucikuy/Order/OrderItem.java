@@ -10,6 +10,7 @@ public class OrderItem implements Serializable {
     private String no_hp;
     private String est_selesai;
     private String no_nota;
+//    private String alamat;
     private boolean belum_bayar;
     private boolean belum_siap;
     private boolean belum_selesai;
@@ -24,6 +25,13 @@ public class OrderItem implements Serializable {
     public String getNama_pelanggan() {
         return nama_pelanggan;
     }
+//    public String getAlamat() {
+//        return alamat;
+//    }
+//
+//    public void setAlamat(String alamat) {
+//        this.alamat = alamat;
+//    }
 
     public void setNama_pelanggan(String nama_pelanggan) {
         this.nama_pelanggan = nama_pelanggan;

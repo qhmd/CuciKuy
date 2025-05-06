@@ -86,6 +86,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/tambah_order"
+            android:clickable="true"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:orientation="vertical"
@@ -106,26 +108,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/search"
-                android:paddingHorizontal="20dp"
-                android:layout_height="50dp"
-                android:background="@drawable/background_opsi_beranda"
-                />
-            <TextView
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:text="Cari\nPesanan"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
+            android:id="@+id/tambah_pelanggan"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_height="wrap_content"
@@ -147,44 +130,15 @@
                 android:gravity="center"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:src="@drawable/person_search"
-                android:paddingHorizontal="20dp"
-                android:layout_marginBottom="15dp"
-                android:background="@drawable/background_opsi_beranda"
-                android:layout_height="50dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:gravity="center"
-                android:text="Tambah\nPesanan"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:background="@drawable/background_opsi_beranda"
-        android:layout_marginTop="50dp"
+
+    <View
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/background_border_gray"
+        android:layout_height="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_opsi_beranda"
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
-        <TextView
-            android:background="@drawable/background_yellow"
-            android:layout_width="match_parent"
-            android:paddingVertical="10dp"
-            android:text="Paket Paling Laris"
-            android:textStyle="bold"
-            android:layout_marginHorizontal="1dp"
-            android:layout_marginTop="1dp"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

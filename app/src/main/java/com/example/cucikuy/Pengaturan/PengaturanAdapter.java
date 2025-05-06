@@ -48,12 +48,6 @@ public class PengaturanAdapter extends RecyclerView.Adapter<PengaturanAdapter.Vi
                 case "Pengaturan Layanan":
                     context.startActivity(new Intent(context, PengaturanLayananActivity.class));
                     break;
-                case "Pengaturan Parfum":
-                    context.startActivity(new Intent(context, PengaturanParfumActivity.class));
-                    break;
-                case "Pengaturan Diskon":
-                    context.startActivity(new Intent(context, PengaturanDiskonActivity.class));
-                    break;
                 case "Pengaturan Pelanggan":
                     context.startActivity(new Intent(context, PengaturanPelangganActivity.class));
                     break;

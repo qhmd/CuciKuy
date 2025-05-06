@@ -24,11 +24,14 @@
     import com.google.android.material.dialog.MaterialAlertDialogBuilder;
     import com.google.firebase.auth.FirebaseAuth;
     import com.google.firebase.auth.FirebaseUser;
+    import com.google.firebase.firestore.FieldValue;
     import com.google.firebase.firestore.FirebaseFirestore;
     import com.google.gson.Gson;
 
     import java.util.ArrayList;
     import java.util.Formatter;
+    import java.util.HashMap;
+    import java.util.Map;
 
     public class DetailOrderanActivity extends AppCompatActivity {
         private String orderId;
@@ -59,12 +62,13 @@
             TextView tvNoHp = findViewById(R.id.tv_no_hp);
             TextView tvTanggalMsuk = findViewById(R.id.tanggal_masuk);
             TextView tvEstSelesai = findViewById(R.id.est_seleai);
+            TextView tvStatusPesanan = findViewById(R.id.statusPesanan);
+
 
             Button btnKirimWa = findViewById(R.id.kirimWa);
             Button btnPembayaran = findViewById(R.id.pembayran_selesai);
             Button btnPesananSiap = findViewById(R.id.pesanan_siap);
             Button btnPesananSelesai = findViewById(R.id.pesanan_selesai);
-
 
             tvNama.setText(nama);
             tvTotalHarga.setText("Rp " +FormatIDR.FormatIDR(totalHarga));
@@ -112,6 +116,8 @@
                 btnPesananSiap.setVisibility(View.GONE);
             }
 
+            tvStatusPesanan.setText(order.isBelum_siap() ? "Antrian" : "Siap Ambil");
+
             btnKirimWa.setOnClickListener(v -> {
                 Log.i("isiorder", new Gson().toJson(order));
                 Log.i("isiorder", new Gson().toJson(selectedLayanan));
@@ -123,6 +129,46 @@
                 startActivity(intent);
                 finish();
             });
+
+            TextView batalkanPesanan = findViewById(R.id.batalkan_pesanan);
+            batalkanPesanan.setOnClickListener(v -> {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                        .setTitle("Konfirmasi")
+                        .setMessage("Apakah Anda yakin ingin membatalkan pesanan ini?")
+                        .setPositiveButton("Ya", (dialog, which) -> {
+                            if (order != null && orderId != null && !orderId.isEmpty()) {
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users")
+                                        .document(userId)
+                                        .collection("pesanan")
+                                        .document("statusPesanan")
+                                        .collection("antrian")
+                                        .document(orderId)
+                                        .delete()
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(this, "Pesanan berhasil dibatalkan", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(DetailOrderanActivity.this, HomeActivity.class);
+                                            intent.putExtra("navigateTo", "order");
+                                            startActivity(intent);
+                                            finish();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("BatalkanPesanan", "Gagal membatalkan pesanan", e);
+                                            Toast.makeText(this, "Gagal membatalkan pesanan", Toast.LENGTH_SHORT).show();
+                                        });
+                            } else {
+                                Toast.makeText(this, "Data pesanan tidak valid", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Tidak", (dialog, which) -> {});
+                AlertDialog dialog = builder.create();
+                dialog.setOnShowListener(d -> {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.black));
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.black));
+                });
+                dialog.show();
+            });
+
 
             btnPembayaran.setOnClickListener(v -> {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
@@ -215,18 +261,23 @@
                         .setPositiveButton("Ya", (dialog, which) -> {
                             if (order != null) {
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                Map<String, Object> updateData = new HashMap<>();
+                                updateData.put("belum_selesai", false);
+                                updateData.put("tanggal_selesai", FieldValue.serverTimestamp()); // <-- Tambahkan ini
+
                                 db.collection("users")
                                         .document(userId)
                                         .collection("pesanan")
                                         .document("statusPesanan")
                                         .collection("antrian")
                                         .document(orderId)
-                                        .update("belum_selesai", false)
+                                        .update(updateData)
                                         .addOnSuccessListener(aVoid ->
                                                 Toast.makeText(this, "Pesanan Telah Selesai", Toast.LENGTH_SHORT).show()
                                         )
                                         .addOnFailureListener(e -> Log.e("UpdateStatus", "Gagal update status", e));
                             }
+
                         })
 
                         .setNegativeButton("Tidak", (dialog, which) -> {});
