@@ -105,10 +105,12 @@
                 LayananOrderAdapter adapter = new LayananOrderAdapter(selectedLayanan);
                 recyclerView.setAdapter(adapter);
             }
-            if (!order.isBelum_bayar() && !order.isBelum_siap()) {
+
+            Log.d("tesss", "isBelum_siap: " + order.isBelum_siap());
+
+            if (!order.isBelum_siap()) {
                 btnPesananSiap.setVisibility(View.GONE);
             }
-
 
             btnKirimWa.setOnClickListener(v -> {
                 Log.i("isiorder", new Gson().toJson(order));
@@ -167,10 +169,11 @@
             btnPesananSiap.setOnClickListener(v -> {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                         .setTitle("Konfirmasi")
-                        .setMessage("Pesanan telah selesai ?")
+                        .setMessage("Pesanan telah Siap ?")
                         .setPositiveButton("Ya", (dialog, which) -> {
                             if (order != null) {
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
+
                                 db.collection("users")
                                         .document(userId)
                                         .collection("pesanan")
@@ -178,11 +181,24 @@
                                         .collection("antrian")
                                         .document(orderId)
                                         .update("belum_siap", false)
-                                        .addOnSuccessListener(aVoid -> Log.d("UpdateStatus", "Status berhasil diupdate"))
-                                        .addOnFailureListener(e -> Log.e("UpdateStatus", "Gagal update status", e));
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("UpdateStatus", "Status berhasil diupdate");
+
+                                            // Kirim WhatsApp lewat WaNota
+                                            Intent intent = new Intent(this, WaNota.class);
+                                            intent.putExtra("from_status_siap", true); // Tambahkan flag ini
+//                                            intent.putExtra("selectedLayanan", selectedLayanan);
+                                            intent.putExtra("order", order); // Pastikan OrderItem implements Serializable
+                                            startActivity(intent);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("UpdateStatus", "Gagal update status", e);
+                                            Toast.makeText(this, "Gagal memperbarui status pesanan", Toast.LENGTH_SHORT).show();
+                                        });
+                            } else {
+                                Toast.makeText(this, "Data order tidak tersedia", Toast.LENGTH_SHORT).show();
                             }
                         })
-
                         .setNegativeButton("Tidak", (dialog, which) -> {});
                 AlertDialog dialog = builder.create();
                 dialog.setOnShowListener(d -> {
@@ -205,8 +221,10 @@
                                         .document("statusPesanan")
                                         .collection("antrian")
                                         .document(orderId)
-                                        .update("belum_siap", false)
-                                        .addOnSuccessListener(aVoid -> Log.d("UpdateStatus", "Status berhasil diupdate"))
+                                        .update("belum_selesai", false)
+                                        .addOnSuccessListener(aVoid ->
+                                                Toast.makeText(this, "Pesanan Telah Selesai", Toast.LENGTH_SHORT).show()
+                                        )
                                         .addOnFailureListener(e -> Log.e("UpdateStatus", "Gagal update status", e));
                             }
                         })

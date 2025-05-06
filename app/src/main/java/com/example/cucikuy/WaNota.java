@@ -21,6 +21,8 @@ public class WaNota extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private OrderItem order;
+    private boolean fromStatusSiap = false;
+
     private ArrayList<LayananItem> selectedLayanan;
     private String namaLaundry = "", alamatLaundry = "", noHpLaundry = "";
 
@@ -33,7 +35,18 @@ public class WaNota extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         fromPembayaran = getIntent().getBooleanExtra("from_pembayaran", false);
+        fromStatusSiap = getIntent().getBooleanExtra("from_status_siap", false);
 
+        if (fromStatusSiap) {
+            selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");
+            order = (OrderItem) getIntent().getSerializableExtra("order");
+            if (order == null) {
+                Toast.makeText(this, "Data order tidak tersedia", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+            loadProfilLaundryAndSendStatusSiap();
+        }
 
         if (fromPembayaran) {
             // Ambil data dari intent
@@ -41,20 +54,18 @@ public class WaNota extends AppCompatActivity {
             namaPembayaran = getIntent().getStringExtra("nama");
             totalHargaPembayaran = getIntent().getDoubleExtra("totalHarga", 0.0);
             noHpPembayaran = getIntent().getStringExtra("noHp");
-
             loadProfilLaundryAndSendPayment();
         } else {
             // Ambil data dari Intent untuk pengiriman nota lengkap
             order = (OrderItem) getIntent().getSerializableExtra("order");
             selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");
             noHpPembayaran = getIntent().getStringExtra("noHp");
-            Log.i("inihp", noHpPembayaran);
-            if (order == null || selectedLayanan == null) {
+            Log.i("inihp", new Gson().toJson(selectedLayanan));
+            if (order == null) {
                 Toast.makeText(this, "Data order atau layanan tidak tersedia", Toast.LENGTH_SHORT).show();
                 finish();
                 return;
             }
-
             loadProfilLaundry();
         }
     }
@@ -173,6 +184,36 @@ public class WaNota extends AppCompatActivity {
 
         return sb.toString();
     }
+
+    private void loadProfilLaundryAndSendStatusSiap() {
+        String userId = mAuth.getCurrentUser().getUid();
+        db.collection("users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        namaLaundry = documentSnapshot.getString("nama_outlet");
+                        alamatLaundry = documentSnapshot.getString("alamat");
+                        noHpLaundry = documentSnapshot.getString("no_hp");
+
+                        String status = order.isBelum_bayar() ? "Belum Bayar" : "Lunas";
+
+                        String pesan = "Hai " + order.getNama_pelanggan() + ", pesanan " + order.getNo_nota()
+                                + " anda sudah siap, silahkan ambil di " + namaLaundry + ".\n\n"
+                                + "Harga Akhir : Rp " + FormatIDR.FormatIDR(order.getTotal_bayar()) + "\n"
+                                + "Status : " + status + "\n\n"
+                                + "Terima kasih,\n" + namaLaundry;
+
+                        kirimKeWhatsApp(order.getNo_hp(), pesan);
+                    } else {
+                        Toast.makeText(this, "Data laundry tidak ditemukan", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Gagal memuat profil laundry", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+    }
+
 
     private void kirimKeWhatsApp(String nomorTujuan, String pesan) {
         Log.i("lilbro", nomorTujuan);

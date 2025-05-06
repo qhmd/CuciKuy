@@ -81,39 +81,50 @@ public class FragmentAntrian extends Fragment {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                             try {
-                                OrderItem orderItem = new OrderItem();
+                                Boolean belumSiap = document.getBoolean("belum_siap");
+                                Boolean belumSelesai = document.getBoolean("belum_selesai");
+                                if (belumSiap != null && belumSiap == true && belumSelesai != null & belumSelesai == true) {
+                                    // lanjut proses seperti biasa
+                                    OrderItem orderItem = new OrderItem();
+                                    orderItem.setNama_pelanggan(document.getString("nama_pelanggan"));
+                                    orderItem.setNo_hp(document.getString("no_hp"));
+                                    orderItem.setEst_selesai(document.getString("est_selesai"));
+                                    orderItem.setNo_nota(document.getString("no_nota"));
+                                    orderItem.setBelum_bayar(Boolean.TRUE.equals(document.getBoolean("belum_bayar")));
+                                    orderItem.setTanggal(document.getString("tanggal"));
+                                    orderItem.setJenis_durasi(document.getString("jenis_durasi"));
 
-                                orderItem.setNama_pelanggan(document.getString("nama_pelanggan"));
-                                orderItem.setNo_hp(document.getString("no_hp"));
-                                orderItem.setEst_selesai(document.getString("est_selesai"));
-                                orderItem.setNo_nota(document.getString("no_nota"));
-                                orderItem.setBelum_bayar(Boolean.TRUE.equals(document.getBoolean("belum_bayar")));
-                                orderItem.setTanggal(document.getString("tanggal"));
-                                orderItem.setJenis_durasi(document.getString("jenis_durasi"));
-
-                                // Handle total_bayar secara aman
-                                Object total = document.get("total_bayar");
-                                double totalBayar = 0.0;
-                                Log.w("fetchOrders", String.valueOf(total));
-
-//                                Log.w("fetchOrders", (String) total);
-                                if (total instanceof Number) {
-                                    totalBayar = ((Number) total).doubleValue();
-                                } else if (total instanceof String) {
-                                    try {
-                                        totalBayar = Double.parseDouble((String) total);
-                                    } catch (NumberFormatException e) {
-                                        Log.w("fetchOrders", "Format total_bayar salah di dokumen: " + document.getId());
+                                    // proses total_bayar seperti sebelumnya
+                                    Object total = document.get("total_bayar");
+                                    double totalBayar = 0.0;
+                                    if (total instanceof Number) {
+                                        totalBayar = ((Number) total).doubleValue();
+                                    } else if (total instanceof String) {
+                                        try {
+                                            totalBayar = Double.parseDouble((String) total);
+                                        } catch (NumberFormatException e) {
+                                            Log.w("fetchOrders", "Format total_bayar salah di dokumen: " + document.getId());
+                                        }
                                     }
+                                    orderItem.setTotal_bayar(totalBayar);
+
+                                    // Tambahkan ke list
+                                    orderList.add(orderItem);
+                                    // Ambil layanan
+                                    document.getReference().collection("layanan").get().addOnSuccessListener(layananSnapshots -> {
+                                        ArrayList<LayananItem> layananItems = new ArrayList<>();
+                                        for (DocumentSnapshot layananDoc : layananSnapshots) {
+                                            LayananItem layananItem = layananDoc.toObject(LayananItem.class);
+                                            layananItems.add(layananItem);
+                                        }
+                                        layananListPerOrder.add(layananItems);
+
+                                        if (layananListPerOrder.size() == orderList.size()) {
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    });
                                 }
 
-                                orderItem.setTotal_bayar(totalBayar);
-
-                                // Tambahkan ke list jika semua aman
-                                Gson gson = new Gson();
-                                String json = gson.toJson(orderItem);
-                                Log.i("fetchOrders", json);
-                                orderList.add(orderItem);
                             } catch (Exception e) {
                                 Log.e("fetchOrders", "Gagal parsing dokumen: " + document.getId(), e);
                             }

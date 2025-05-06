@@ -57,9 +57,6 @@ public class FragmentOrder extends Fragment {
                         case 1:
                             tab.setText("Siap Ambil");
                             break;
-                        case 2:
-                            tab.setText("Belum Bayar");
-                            break;
                     }
                 }).attach();
 
