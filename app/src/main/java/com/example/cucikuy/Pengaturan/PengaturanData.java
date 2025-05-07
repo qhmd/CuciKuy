@@ -11,8 +11,6 @@ public class PengaturanData {
             "Pengaturan Toko",
             "Pengaturan Durasi",
             "Pengaturan Layanan",
-            "Pengaturan Parfum",
-            "Pengaturan Diskon",
             "Pengaturan Pelanggan",
             "Pengaturan nota",
     };
@@ -21,8 +19,6 @@ public class PengaturanData {
             "Ubah data toko anda",
             "Ubah durasi paket",
             "Ubah layanan paket anda",
-            "Ubah jenis parfum anda",
-            "Atur Diskon laundry anda",
             "Atur kontak pelanggan anda",
             "Atur detail nota",
     };

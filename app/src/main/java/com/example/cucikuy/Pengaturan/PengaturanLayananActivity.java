@@ -3,6 +3,7 @@ package com.example.cucikuy.Pengaturan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -32,8 +33,9 @@ public class PengaturanLayananActivity extends AppCompatActivity {
     RecyclerView rvLayanan;
     // Deklarasi TabLayout untuk menampilkan nama durasi
     TabLayout tabLayoutDurasi;
+    ImageView btn_back;
     // Deklarasi tombol untuk menambah layanan
-    ImageView btn_tambah_layanan;
+    Button btn_tambah_layanan;
     // List untuk menyimpan nama durasi
     List<String> durasiNames = new ArrayList<>();
 
@@ -45,12 +47,16 @@ public class PengaturanLayananActivity extends AppCompatActivity {
 
         // Inisialisasi tampilan elemen UI
         btn_tambah_layanan = findViewById(R.id.tambah_layanan);
+        btn_back = findViewById(R.id.arrow_back);
         tabLayoutDurasi = findViewById(R.id.tab_layout_durasi);
         rvLayanan = findViewById(R.id.rv_layanan);
         rvLayanan.setLayoutManager(new LinearLayoutManager(this)); // Layout untuk RecyclerView
         LayananPilihAdapter adapter = new LayananPilihAdapter(layananList);
         rvLayanan.setAdapter(adapter);
 
+        btn_back.setOnClickListener(v -> {
+            finish();
+        });
 
         // Set listener untuk tombol tambah layanan
         btn_tambah_layanan.setOnClickListener(v -> {
@@ -59,6 +65,7 @@ public class PengaturanLayananActivity extends AppCompatActivity {
                 Intent intent = new Intent(PengaturanLayananActivity.this, TambahLayanan.class);
                 intent.putStringArrayListExtra("durasiList", new ArrayList<>(durasiNames));
                 startActivity(intent);
+                finish();
             } else {
                 // Jika data durasi kosong, tampilkan pesan kesalahan
                 Toast.makeText(this, "Data durasi belum tersedia!", Toast.LENGTH_SHORT).show();

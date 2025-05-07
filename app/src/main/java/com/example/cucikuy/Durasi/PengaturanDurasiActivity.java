@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -21,6 +22,7 @@ public class PengaturanDurasiActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DurasiAdapater durasiAdapater;
     private List<DurasiItem> durasiItemList;
+    private ImageView arrow_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,7 @@ public class PengaturanDurasiActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_data_durasi);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
+        arrow_back = findViewById(R.id.arrow_back);
         recyclerView.setHasFixedSize(true);
 
         // Inisialisasi list dulu
@@ -43,6 +45,10 @@ public class PengaturanDurasiActivity extends AppCompatActivity {
         recyclerView.setAdapter(durasiAdapater);
 
         DurasiData dataLoader = new DurasiData();
+
+        arrow_back.setOnClickListener(v -> {
+            finish();
+        });
 
         // Ambil data dari Firestore
         dataLoader.loadDurasiData(new DurasiData.DataCallback() {

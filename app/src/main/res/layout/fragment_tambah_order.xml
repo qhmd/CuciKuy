@@ -44,48 +44,21 @@
         android:layout_marginHorizontal="15dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginVertical="15dp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line_add_order"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/searching_name"
-            android:layout_weight="3"
-            android:layout_height="match_parent">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColorHint="@color/gray"
-                android:background="@color/white"
-                android:textSize="15dp"
-                android:layout_marginVertical="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="1dp"
-                android:paddingVertical="10dp"
-                android:hint="Cari Nama / No Telpon"/>
-            <ImageView
-                android:layout_gravity="center"
-                android:layout_weight="4"
-                android:paddingVertical="5dp"
-                android:layout_width="match_parent"
-                android:background="@drawable/gray_searching_bg"
-                app:tint="@color/white"
-                android:clickable="true"
-                android:layout_height="match_parent"
-                android:src="@drawable/search"/>
-        </LinearLayout>
-        <ImageView
+        <Button
             android:id="@+id/tambah_kontak"
             android:layout_width="wrap_content"
             android:background="@drawable/background_yellow"
             android:paddingVertical="5dp"
             android:paddingHorizontal="25dp"
+            android:text="Tambah Kontak"
+            android:textColor="@color/black"
             android:clickable="true"
-            android:src="@drawable/baseline_add_24"
             android:layout_marginLeft="7dp"
             android:layout_height="match_parent"/>
     </LinearLayout>

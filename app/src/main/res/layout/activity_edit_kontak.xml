@@ -7,7 +7,7 @@
         android:id="@+id/include3"
         layout="@layout/background_home" />
     <LinearLayout
-        android:id="@+id/linear_back_pelanggan"
+        android:id="@+id/linear_back_kontak"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,14 +29,14 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="18dp"
-            android:text="Pengaturan Toko"/>
+            android:text="Pengaturan Kontak"/>
     </LinearLayout>
     <View
-        android:id="@+id/line_add_order"
+        android:id="@+id/line_add_kontak"
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_back_pelanggan"
+        app:layout_constraintTop_toBottomOf="@id/linear_back_kontak"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_input"/>
@@ -45,7 +45,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginHorizontal="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line_add_order"
+        app:layout_constraintTop_toBottomOf="@id/line_add_kontak"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
         android:layout_marginBottom="5dp"
@@ -64,9 +64,9 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:errorEnabled="true"
             android:layout_height="45dp"
-            android:hint="Nama Outler">
+            android:hint="Nama Kontak">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNamaOutlet"
+                android:id="@+id/edit_nama"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingStart="12dp"
@@ -79,49 +79,10 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/linear_alamat"
-        android:layout_marginHorizontal="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_nama"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-        <ImageView
-            app:tint="@color/black"
-            android:layout_marginTop="7dp"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/baseline_navigate_next_24"/>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textFieldAlamat"
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="Alamat"
-            app:errorEnabled="true">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAlamat"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="12dp"
-                android:paddingTop="0dp"
-                android:paddingVertical="7dp"
-                android:inputType="numberDecimal"
-                android:paddingBottom="0dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:paddingEnd="10dp"
-                android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-    <LinearLayout
         android:id="@+id/linear_nohp"
         android:layout_marginHorizontal="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_alamat"
+        app:layout_constraintTop_toBottomOf="@id/linear_nama"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
         android:layout_marginBottom="5dp"
@@ -139,16 +100,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="No Hp"
+            android:hint="Alamat"
             app:errorEnabled="true">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNoHp"
+                android:id="@+id/edit_alamat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingStart="12dp"
                 android:paddingTop="0dp"
                 android:paddingVertical="7dp"
-                android:inputType="numberDecimal"
                 android:paddingBottom="0dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
@@ -156,9 +116,18 @@
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
-
+    <TextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_simpan"
+        android:id="@+id/edit_notelp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="12dp"
+        android:textColor="#888888"
+        android:layout_height="wrap_content"
+        />
     <Button
-        android:id="@+id/btnSimpan"
+        android:id="@+id/btn_simpan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -168,4 +137,9 @@
         app:layout_constraintStart_toStartOf="@+id/include3"
         app:layout_constraintTop_toBottomOf="@+id/linear_nohp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
 

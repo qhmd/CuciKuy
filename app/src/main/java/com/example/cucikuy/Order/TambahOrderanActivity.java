@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -28,7 +29,8 @@ public class TambahOrderanActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private KontakAdapter kontakAdapter;
     private List<KontakItem> kontakItemList;
-    private ImageView btn_add_contact;
+    private Button btn_add_contact;
+    private ImageView arrow_back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class TambahOrderanActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_tambah_order);
         overridePendingTransition(R.anim.fade_in, 0);
 
+        arrow_back = findViewById(R.id.arrow_back);
         btn_add_contact = findViewById(R.id.tambah_kontak);
         recyclerView = findViewById(R.id.recyclerViewKontak);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
@@ -51,6 +54,10 @@ public class TambahOrderanActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(kontakAdapter);
+
+        arrow_back.setOnClickListener(v -> {
+            finish();
+        });
 
         // Panggil FirestoreDataLoader untuk mengambil data kontak
         KontakData dataLoader = new KontakData();

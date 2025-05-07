@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
@@ -42,6 +43,7 @@ public class TambahKontakAktivitas extends AppCompatActivity {
     ConstraintLayout blurTarget;
     private ProgressBar spinner;
     private View darkOverlay;
+    private ImageView arrow_back;
 
 
     private EditText noHp;
@@ -54,6 +56,11 @@ public class TambahKontakAktivitas extends AppCompatActivity {
 
         nama_kontak = findViewById(R.id.textFieldName);
         et_nama_kontak = findViewById(R.id.et_input_name);
+        arrow_back = findViewById(R.id.arrow_back);
+
+        arrow_back.setOnClickListener(v -> {
+            finish();
+        });
 
         if (et_nama_kontak != null) {
             final boolean[] hasTypedBefore = {false};

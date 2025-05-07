@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,7 @@ public class FragmentOrder extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-    private ImageView tambah_order_btn;
+    private Button tambah_order_btn;
 
     @Nullable
     @Override
