@@ -5,6 +5,7 @@
     import android.util.Log;
     import android.view.View;
     import android.widget.Button;
+    import android.widget.ImageView;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -35,6 +36,7 @@
 
     public class DetailOrderanActivity extends AppCompatActivity {
         private String orderId;
+        private ImageView arrow_back;
         private String alamat;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@
             TextView tvEstSelesai = findViewById(R.id.est_seleai);
             TextView tvStatusPesanan = findViewById(R.id.statusPesanan);
             TextView tvAlamat = findViewById(R.id.tv_alamat);
+            arrow_back = findViewById(R.id.arrow_back);
 
 
             Button btnKirimWa = findViewById(R.id.kirimWa);
@@ -85,6 +88,10 @@
             OrderItem order = (OrderItem) getIntent().getSerializableExtra("order");
             ArrayList<LayananItem> selectedLayanan = (ArrayList<LayananItem>) getIntent().getSerializableExtra("selectedLayanan");
             Log.i("gson",new Gson().toJson(order));
+
+            arrow_back.setOnClickListener(v -> {
+                finish();
+            });
 
             if (order == null || selectedLayanan == null) {
                 Toast.makeText(this, "Data pesanan tidak tersedia", Toast.LENGTH_SHORT).show();
@@ -116,11 +123,12 @@
 
             Log.d("tesss", "isBelum_siap: " + order.isBelum_siap());
 
-            if (!order.isBelum_siap() && !order.isBelum_bayar()) {
+            tvStatusPesanan.setText(order.isBelum_siap() ? "Antrian" : "Siap Ambil");
+
+            if (!order.isBelum_bayar() && !order.isBelum_siap()) {
+                btnPesananSelesai.setVisibility(View.VISIBLE);
                 btnPesananSiap.setVisibility(View.GONE);
             }
-
-            tvStatusPesanan.setText(order.isBelum_siap() ? "Antrian" : "Siap Ambil");
 
             btnKirimWa.setOnClickListener(v -> {
                 Log.i("isiorder", new Gson().toJson(order));
@@ -235,6 +243,7 @@
                                         .addOnSuccessListener(aVoid -> {
                                             Log.d("UpdateStatus", "Status berhasil diupdate");
                                             // Kirim WhatsApp lewat WaNota
+
                                             Intent intent = new Intent(this, WaNota.class);
                                             intent.putExtra("from_status_siap", true); // Tambahkan flag ini
                                             intent.putExtra("selectedLayanan", selectedLayanan);

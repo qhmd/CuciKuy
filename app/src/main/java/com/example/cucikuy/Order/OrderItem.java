@@ -65,7 +65,7 @@ public class OrderItem implements Serializable {
     }
 
     public boolean isBelum_siap() {
-        return belum_bayar;
+        return belum_siap;
     }
 
     public void setBelum_siap(boolean belum_siap) {
@@ -73,7 +73,7 @@ public class OrderItem implements Serializable {
     }
 
     public boolean isBelum_selesai() {
-        return belum_bayar;
+        return belum_selesai;
     }
 
     public void setBelum_selesai(boolean belum_selesai) {

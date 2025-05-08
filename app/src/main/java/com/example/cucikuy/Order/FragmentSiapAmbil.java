@@ -85,6 +85,7 @@ public class FragmentSiapAmbil extends Fragment {
                                     orderItem.setEst_selesai(document.getString("est_selesai"));
                                     orderItem.setNo_nota(document.getString("no_nota"));
                                     orderItem.setBelum_bayar(Boolean.TRUE.equals(document.getBoolean("belum_bayar")));
+                                    orderItem.setBelum_siap(Boolean.TRUE.equals(document.getBoolean("belum_siap")));
                                     orderItem.setTanggal(document.getString("tanggal"));
                                     orderItem.setJenis_durasi(document.getString("jenis_durasi"));
 

@@ -47,7 +47,7 @@ public class DetailKontakActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button btn_tambah_order;
     private List<LayananItem> layananList;
-    private Boolean belum_bayar;
+    private Boolean belum_bayar, belum_siap;
 
     private ArrayList<OrderItem> orderList = new ArrayList<>();
 
@@ -61,6 +61,7 @@ public class DetailKontakActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_orderan);
 
         belum_bayar = true;
+        belum_siap = true;
         // Ambil data dari Intent
         durasi = getIntent().getStringExtra("durasiNama");
         namaKontak = getIntent().getStringExtra("nama");
@@ -150,6 +151,7 @@ public class DetailKontakActivity extends AppCompatActivity {
 
                         OrderItem orderItem = new OrderItem();
                         orderItem.setBelum_bayar(belum_bayar); // ✅ set nilai dari variabel kamu
+                        orderItem.setBelum_siap(belum_siap);
                         sendDetailOrder();
 
                         orderItem.setNama_pelanggan(namaKontak);
@@ -246,7 +248,7 @@ public class DetailKontakActivity extends AppCompatActivity {
         pesanan.put("nama_pelanggan", tvNama.getText().toString());
         pesanan.put("no_hp", tvNoHp.getText().toString());
         pesanan.put("belum_bayar", belum_bayar);
-        pesanan.put("belum_siap", belum_bayar);
+        pesanan.put("belum_siap", belum_siap);
         pesanan.put("belum_selesai", belum_bayar);
         if (alamat != null) {
 //            alamat = tvAlamat.getText().toString().trim();
